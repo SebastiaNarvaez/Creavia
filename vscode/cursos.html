@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creavia — Cursos</title>
+
+  <style>
+    :root {
+      --amarillo: #f8efbc;
+      --verde: #6cdf8d;
+      --azul: #a0f8f8;
+      --fondo: #fafaf5;
+      --texto: #1c1c1c;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: var(--fondo);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fondo pastel animado */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 25% 30%, var(--azul) 0%, transparent 50%),
+        radial-gradient(circle at 75% 60%, var(--verde) 0%, transparent 60%),
+        radial-gradient(circle at 50% 80%, var(--amarillo) 0%, transparent 60%);
+      opacity: 0.7;
+      filter: blur(80px);
+      z-index: 0;
+      animation: moveWaves 25s infinite alternate ease-in-out;
+    }
+
+    @keyframes moveWaves {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        transform: translate(-3%, -3%) scale(1.05);
+      }
+    }
+
+    /* Logo de fondo */
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("../Imagenes/LOG2.png") no-repeat center center;
+      background-size: 400px auto;
+      opacity: 0.1;
+      z-index: 1;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(90deg, var(--azul), var(--verde));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    /* LOGO */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+    }
+
+    .logo span {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--texto);
+    }
+
+    /* MENÚ HAMBURGUESA */
+    .menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      position: relative;
+      z-index: 1100;
+    }
+
+    .menu-btn span {
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      background: var(--texto);
+      border-radius: 2px;
+      left: 0;
+      transition: 0.3s ease;
+    }
+
+    .menu-btn span:nth-child(1) {
+      top: 10px;
+    }
+
+    .menu-btn span:nth-child(2) {
+      top: 18px;
+    }
+
+    .menu-btn span:nth-child(3) {
+      top: 26px;
+    }
+
+    .menu-btn.active span:nth-child(1) {
+      transform: rotate(45deg);
+      top: 18px;
+    }
+
+    .menu-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-btn.active span:nth-child(3) {
+      transform: rotate(-45deg);
+      top: 18px;
+    }
+
+    /* PANEL LATERAL */
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 250px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 100px;
+      transition: right 0.4s ease;
+      z-index: 999;
+    }
+
+    .menu-panel.active {
+      right: 0;
+    }
+
+    .menu-panel a {
+      text-decoration: none;
+      color: var(--texto);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 15px 0;
+      transition: 0.3s;
+    }
+
+    .menu-panel a:hover {
+      color: var(--azul);
+    }
+
+    /* CONTENIDO */
+    main {
+      margin-top: 120px;
+      position: relative;
+      z-index: 10;
+      width: 90%;
+      max-width: 1000px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 18px 40px rgba(10, 20, 40, 0.1);
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--azul);
+      font-size: 2rem;
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
+
+    .options button {
+      background: var(--verde);
+      color: var(--texto);
+      border: none;
+      border-radius: 999px;
+      padding: 12px 28px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin: 10px;
+    }
+
+    .options button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* UNIVERSIDADES */
+    .universities-container {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .university-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      width: 230px;
+      padding: 1rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .university-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .university-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .university-card h3 {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--texto);
+    }
+
+    /* CARRERAS */
+    .careers-container {
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    .career-list {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+
+    .career-list li {
+      margin: 8px 0;
+      font-weight: 600;
+      color: var(--texto);
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 25px;
+      }
+
+      .university-card {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <img src="../Imagenes/LOG2.jpg" alt="Logo Creavia" />
+      <span>Creavia</span>
+    </div>
+    <button class="menu-btn" id="menu-btn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <nav class="menu-panel" id="menu-panel">
+    <a href="../index.html">Inicio</a>
+    <a href="test.html">Test </a>
+    <a href="habilidades.html">Habilidades</a>
+    <a href="cursos.html">Cursos</a>
+    <a href="sesion.html">Iniciar Sesión</a>
+  </nav>
+
+  <main>
+    <h2>Cursos</h2>
+    <div class="maintenance-message">
+        <p>Lo sentimos, estamos trabajando para que funcione este apartado.</p>
+    </div>
+</main>
+
+
+  <script>
+    const menuBtn = document.getElementById("menu-btn");
+    const menuPanel = document.getElementById("menu-panel");
+
+    menuBtn.addEventListener("click", () => {
+      menuBtn.classList.toggle("active");
+      menuPanel.classList.toggle("active");
+    });
+
+    const universitiesData = {
+      "Colombia": [
+        {
+          name: "Universidad de los Andes",
+          image: "./Imagenes/andes.png",
+          careers: [
+            { name: "Ingeniería Industrial", price: "$71.040.000" },
+            { name: "Derecho", price: "$25.460.000" },
+            { name: "Contaduría", price: "$18.476.000" }
+          ]
+        },
+        {
+          name: "Universidad CESMAG",
+          image: "./Imagenes/cesmag.png",
+          careers: [
+            { name: "Derecho", price: "$4.000.000" },
+            { name: "Ingeniería de Sistemas", price: "$3.000.000" },
+            { name: "Educación Física", price: "$4.000.000" }
+          ]
+        }
+      ],
+      "Estados Unidos": [
+        {
+          name: "Harvard University",
+          image: "./Imagenes/harvard-university-logo-1.png",
+          careers: [
+            { name: "Derecho", price: "$80,000" },
+            { name: "Medicina", price: "$71,000" },
+            { name: "Ingeniería", price: "$80,000" }
+          ]
+        },
+        {
+          name: "MIT",
+          image: "./Imagenes/mit.png",
+          careers: [
+            { name: "Ingeniería Eléctrica", price: "$62,000" },
+            { name: "Física", price: "$85,960" },
+            { name: "Arquitectura", price: "$85,960" }
+          ]
+        }
+      ]
+    };
+
+    function showUniversities(country) {
+      const list = document.getElementById("universities-list");
+      const careers = document.getElementById("careers-container");
+      list.innerHTML = "";
+      careers.style.display = "none";
+
+      universitiesData[country].forEach(u => {
+        const card = document.createElement("div");
+        card.className = "university-card";
+        card.innerHTML = `
+          <img src="${u.image}" alt="${u.name}">
+          <h3>${u.name}</h3>
+        `;
+        card.onclick = () => showCareers(u);
+        list.appendChild(card);
+      });
+    }
+
+    function showCareers(university) {
+      const careersContainer = document.getElementById("careers-container");
+      const careerList = document.getElementById("career-list");
+      careerList.innerHTML = "";
+      university.careers.forEach(c => {
+        const li = document.createElement("li");
+        li.textContent = `${c.name}: ${c.price}`;
+        careerList.appendChild(li);
+      });
+      careersContainer.style.display = "block";
+    }
+  </script>
+</body>
+</html>

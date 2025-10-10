@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creavia — Inicio</title>
+
+  <style>
+    :root {
+      --amarillo: #f8efbc;
+      --verde: #6cdf8d;
+      --azul: #a0f8f8;
+      --fondo: #fafaf5;
+      --texto: #1c1c1c;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: var(--fondo);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fondo pastel */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 25% 30%, var(--azul) 0%, transparent 50%),
+        radial-gradient(circle at 75% 60%, var(--verde) 0%, transparent 60%),
+        radial-gradient(circle at 50% 80%, var(--amarillo) 0%, transparent 60%);
+      opacity: 0.7;
+      filter: blur(80px);
+      z-index: 0;
+      animation: moveWaves 25s infinite alternate ease-in-out;
+    }
+
+    @keyframes moveWaves {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-3%, -3%) scale(1.05); }
+    }
+
+    /* Logo de fondo */
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("./Imagenes/LOG2.png") no-repeat center center;
+      background-size: 400px auto;
+      opacity: 0.15;
+      z-index: 1;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(90deg, var(--azul), var(--verde));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    /* LOGO */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+    }
+
+    .logo span {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--texto);
+    }
+
+    /* BOTÓN MENÚ */
+    .menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      position: relative;
+      z-index: 1100;
+    }
+
+    .menu-btn span {
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      background: var(--texto);
+      border-radius: 2px;
+      left: 0;
+      transition: 0.3s ease;
+    }
+
+    .menu-btn span:nth-child(1) { top: 10px; }
+    .menu-btn span:nth-child(2) { top: 18px; }
+    .menu-btn span:nth-child(3) { top: 26px; }
+
+    .menu-btn.active span:nth-child(1) {
+      transform: rotate(45deg);
+      top: 18px;
+    }
+
+    .menu-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-btn.active span:nth-child(3) {
+      transform: rotate(-45deg);
+      top: 18px;
+    }
+
+    /* MENÚ DESLIZANTE */
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 250px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 100px;
+      transition: right 0.4s ease;
+      z-index: 999;
+    }
+
+    .menu-panel.active { right: 0; }
+
+    .menu-panel a {
+      text-decoration: none;
+      color: var(--texto);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 15px 0;
+      transition: 0.3s;
+    }
+
+    .menu-panel a:hover {
+      color: var(--azul);
+    }
+
+    /* CONTENIDO PRINCIPAL */
+    main {
+      margin-top: 120px;
+      position: relative;
+      z-index: 10;
+      width: 90%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 16px;
+      padding: 34px;
+      box-shadow: 0 18px 40px rgba(10, 20, 40, 0.1);
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--azul);
+      font-size: 2rem;
+      margin-bottom: 15px;
+      font-weight: 800;
+    }
+
+    p {
+      color: var(--texto);
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    button {
+      background: var(--verde);
+      color: var(--texto);
+      border: none;
+      border-radius: 999px;
+      padding: 12px 30px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    #test-container {
+      display: none;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      margin-top: 30px;
+    }
+
+    .question-container {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .question-container label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .question-options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+
+    .question-options input[type="radio"] {
+      width: 18px;
+      height: 18px;
+    }
+
+    @media (max-width: 480px) {
+      main {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="./Imagenes/LOG2.jpg" alt="Logo Creavia">
+      <span>Creavia</span>
+    </div>
+    <button class="menu-btn" id="menu-btn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <nav class="menu-panel" id="menu-panel">
+    <a href="index.html">Inicio</a>
+    <a href="vscode/test.html">Test</a>
+    <a href="vscode/habilidades.html">Habilidades</a>
+    <a href="vscode/cursos.html">Cursos</a>
+    <a href="vscode/sesion.html">Iniciar Sesión</a>
+  </nav>
+
+  <main>
+    <div id="main-content">
+      <h2>Bienvenido a Creavia</h2>
+      <p>El propósito de Creavia es acompañar y fortalecer las competencias personales y profesionales de las personas, brindando apoyo en procesos importantes de su vida mediante herramientas claras, inspiradoras e inclusivas.</p>
+  </main>
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const menuPanel = document.getElementById('menu-panel');
+
+    menuBtn.addEventListener('click', () => {
+      menuBtn.classList.toggle('active');
+      menuPanel.classList.toggle('active');
+    });
+
+    function showVocationalTest() {
+      document.getElementById("main-content").style.display = "none";
+      document.getElementById("test-container").style.display = "block";
+    }
+
+    function backToDashboard() {
+      document.getElementById("main-content").style.display = "block";
+      document.getElementById("test-container").style.display = "none";
+    }
+
+    document.getElementById("vocational-test-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const faculties = ["Educación", "Derecho", "Ciencias de la Salud", "Artes", "Ingeniería", "Humanidades"];
+      const randomIndex = Math.floor(Math.random() * faculties.length);
+      alert(`Tu carrera recomendada es: ${faculties[randomIndex]}`);
+    });
+  </script>
+</body>
+</html>

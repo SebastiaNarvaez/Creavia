@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creavia — Habilidades</title>
+
+  <style>
+    :root {
+      --amarillo: #f8efbc;
+      --verde: #6cdf8d;
+      --azul: #a0f8f8;
+      --fondo: #fafaf5;
+      --texto: #1c1c1c;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: var(--fondo);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 25% 30%, var(--azul) 0%, transparent 50%),
+        radial-gradient(circle at 75% 60%, var(--verde) 0%, transparent 60%),
+        radial-gradient(circle at 50% 80%, var(--amarillo) 0%, transparent 60%);
+      opacity: 0.7;
+      filter: blur(80px);
+      z-index: 0;
+      animation: moveWaves 25s infinite alternate ease-in-out;
+    }
+
+    @keyframes moveWaves {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-3%, -3%) scale(1.05); }
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("../Imagenes/LOG2.png") no-repeat center center;
+      background-size: 400px auto;
+      opacity: 0.15;
+      z-index: 1;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(90deg, var(--azul), var(--verde));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+    }
+
+    .logo span {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--texto);
+    }
+
+    .menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      position: relative;
+      z-index: 1100;
+    }
+
+    .menu-btn span {
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      background: var(--texto);
+      border-radius: 2px;
+      left: 0;
+      transition: 0.3s ease;
+    }
+
+    .menu-btn span:nth-child(1) { top: 10px; }
+    .menu-btn span:nth-child(2) { top: 18px; }
+    .menu-btn span:nth-child(3) { top: 26px; }
+
+    .menu-btn.active span:nth-child(1) {
+      transform: rotate(45deg);
+      top: 18px;
+    }
+
+    .menu-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-btn.active span:nth-child(3) {
+      transform: rotate(-45deg);
+      top: 18px;
+    }
+
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 250px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 100px;
+      transition: right 0.4s ease;
+      z-index: 999;
+    }
+
+    .menu-panel.active { right: 0; }
+
+    .menu-panel a {
+      text-decoration: none;
+      color: var(--texto);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 15px 0;
+      transition: 0.3s;
+    }
+
+    .menu-panel a:hover {
+      color: var(--azul);
+    }
+
+    main {
+      margin-top: 120px;
+      position: relative;
+      z-index: 10;
+      width: 90%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 16px;
+      padding: 34px;
+      box-shadow: 0 18px 40px rgba(10, 20, 40, 0.1);
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--azul);
+      font-size: 2rem;
+      margin-bottom: 15px;
+      font-weight: 800;
+    }
+
+    p {
+      color: var(--texto);
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .skill-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      padding: 20px;
+      width: 280px;
+      text-align: left;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      transition: transform 0.2s, background 0.3s;
+      cursor: pointer;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-5px);
+      background: var(--azul);
+    }
+
+    .skill-card h3 {
+      color: var(--verde);
+      margin-bottom: 10px;
+    }
+
+    .skill-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .skill-card li {
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    /* Sección de evaluación */
+    #evaluacion {
+      display: none;
+    }
+
+    .btn-volver {
+      background: var(--verde);
+      border: none;
+      color: var(--texto);
+      padding: 12px 25px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      margin-top: 20px;
+      transition: 0.3s ease;
+    }
+
+    .btn-volver:hover {
+      background: var(--azul);
+    }
+
+    @media (max-width: 480px) {
+      main {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="../Imagenes/LOG2.png" alt="Logo Creavia">
+      <span>Creavia</span>
+    </div>
+    <button class="menu-btn" id="menu-btn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <nav class="menu-panel" id="menu-panel">
+    <a href="../index.html">Inicio</a>
+    <a href="test.html">Test </a>
+    <a href="habilidades.html">Habilidades</a>
+    <a href="cursos.html">Cursos</a>
+    <a href="sesion.html">Iniciar Sesión</a>
+  </nav>
+
+  <main>
+    <!-- SECCIÓN PRINCIPAL -->
+    <section id="principal">
+      <h2>Habilidades Duras y Blandas</h2>
+      <p>Conoce las habilidades que fortalecen tu crecimiento personal y profesional.</p>
+
+      <div class="skills">
+        <div class="skill-card" onclick="mostrarEvaluacion('duras')">
+          <h3>💼 Habilidades Duras</h3>
+          <ul>
+            <li>Manejo de software especializado</li>
+            <li>Programación y análisis de datos</li>
+            <li>Dominio de idiomas</li>
+            <li>Diseño y modelado digital</li>
+            <li>Gestión de proyectos</li>
+          </ul>
+        </div>
+
+        <div class="skill-card" onclick="mostrarEvaluacion('blandas')">
+          <h3>🤝 Habilidades Blandas</h3>
+          <ul>
+            <li>Comunicación efectiva</li>
+            <li>Trabajo en equipo</li>
+            <li>Liderazgo</li>
+            <li>Empatía y adaptabilidad</li>
+            <li>Pensamiento crítico</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE EVALUACIÓN -->
+    <section id="evaluacion">
+      <h2>Evalúa tus habilidades</h2>
+      <p>Reflexiona sobre tus fortalezas y áreas de mejora. Este es un paso importante hacia tu desarrollo profesional.</p>
+      <button class="btn-volver" onclick="volverInicio()">⬅ Volver</button>
+    </section>
+  </main>
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const menuPanel = document.getElementById('menu-panel');
+
+    menuBtn.addEventListener('click', () => {
+      menuBtn.classList.toggle('active');
+      menuPanel.classList.toggle('active');
+    });
+
+    function mostrarEvaluacion(tipo) {
+      document.getElementById('principal').style.display = 'none';
+      const evalSection = document.getElementById('evaluacion');
+      evalSection.style.display = 'block';
+      evalSection.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function volverInicio() {
+      document.getElementById('evaluacion').style.display = 'none';
+      document.getElementById('principal').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>

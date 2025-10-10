@@ -1,0 +1,143 @@
+/* Paleta */
+:root {
+    --lavanda: #C8B6E2;
+    --celeste: #B8E1FF;
+    --amarillo: #FFF1B0;
+    --menta: #C4FCEF;
+  }
+  
+  /* General */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    overflow: hidden;
+  }
+  
+  /* Header */
+  header {
+    background: linear-gradient(90deg, var(--lavanda), var(--celeste));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  /* Botón del menú */
+  .menu {
+    position: relative;
+  }
+  
+  .menu-btn {
+    background-color: var(--amarillo);
+    border: none;
+    border-radius: 5px;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .menu-btn:hover {
+    background-color: var(--menta);
+  }
+  
+  /* Menú desplegable */
+  .menu-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border-radius: 8px;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    display: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  
+  .menu-items li {
+    border-bottom: 1px solid #eee;
+  }
+  
+  .menu-items li:last-child {
+    border-bottom: none;
+  }
+  
+  .menu-items a {
+    display: block;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    color: #333;
+    transition: background 0.3s;
+  }
+  
+  .menu-items a:hover {
+    background-color: var(--celeste);
+  }
+  
+  /* Mostrar menú */
+  .menu.active .menu-items {
+    display: block;
+  }
+  
+  /* Fondo con logo */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: var(--menta);
+    background-image: url('/Imagenes/LOG2.jpg'); /* coloca aquí tu logo */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 40%;
+    position: relative;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,0.5); /* opacidad */
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+    color: var(--lavanda);
+    z-index: 1;
+  }
+  
+  .hero p {
+    font-size: 1.3rem;
+    color: #555;
+    z-index: 1;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2rem;
+    }
+    .hero p {
+      font-size: 1rem;
+    }
+  }
+  

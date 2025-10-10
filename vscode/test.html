@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creavia - Test </title>
+  <style>
+    :root {
+      --amarillo: #f8efbc;
+      --verde: #6cdf8d;
+      --azul: #a0f8f8;
+      --fondo: #FAFAF5;
+      --texto: #1C1C1C;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-x: hidden;
+      background: var(--fondo);
+      position: relative;
+    }
+
+    /* Fondo pastel animado */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 25% 30%, var(--azul) 0%, transparent 50%),
+        radial-gradient(circle at 75% 60%, var(--verde) 0%, transparent 60%),
+        radial-gradient(circle at 50% 80%, var(--amarillo) 0%, transparent 60%);
+      opacity: 0.7;
+      filter: blur(80px);
+      animation: moveWaves 25s infinite alternate ease-in-out;
+      z-index: 0;
+    }
+
+    @keyframes moveWaves {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-3%, -3%) scale(1.05); }
+    }
+
+    /* Logo de fondo */
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("../Imagenes/LOG2.jpg") no-repeat center center;
+      background-size: 400px auto;
+      opacity: 0.15;
+      z-index: 1;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(90deg, var(--azul), var(--verde));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+    }
+
+    .logo span {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--texto);
+    }
+
+    /* Botón de menú */
+    .menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      position: relative;
+      z-index: 1100;
+    }
+
+    .menu-btn span {
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      background: var(--texto);
+      border-radius: 2px;
+      left: 0;
+      transition: 0.3s ease;
+    }
+
+    .menu-btn span:nth-child(1) { top: 10px; }
+    .menu-btn span:nth-child(2) { top: 18px; }
+    .menu-btn span:nth-child(3) { top: 26px; }
+
+    .menu-btn.active span:nth-child(1) {
+      transform: rotate(45deg);
+      top: 18px;
+    }
+
+    .menu-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-btn.active span:nth-child(3) {
+      transform: rotate(-45deg);
+      top: 18px;
+    }
+
+    /* Panel lateral */
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 250px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 100px;
+      transition: right 0.4s ease;
+      z-index: 999;
+    }
+
+    .menu-panel.active { right: 0; }
+
+    .menu-panel a {
+      text-decoration: none;
+      color: var(--texto);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 15px 0;
+      transition: 0.3s;
+    }
+
+    .menu-panel a:hover {
+      color: var(--azul);
+    }
+
+    /* CONTENIDO PRINCIPAL */
+    .main-content {
+      z-index: 10;
+      margin-top: 120px;
+      width: 90%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: var(--azul);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    button {
+      background: var(--verde);
+      border: none;
+      border-radius: 999px;
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--texto);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Test */
+    #test-container {
+      display: none;
+      z-index: 10;
+      width: 90%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-top: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(8px);
+      text-align: left;
+    }
+
+    .question-container { margin-bottom: 1.5rem; }
+    .question-container p { font-weight: bold; }
+    .question-options label { display: flex; align-items: center; margin-bottom: 8px; }
+
+    /* Notificación */
+    #notification {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgb(56, 56, 247);
+      color: white;
+      padding: 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      max-width: 90%;
+      min-width: 200px;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    #notification.hidden { visibility: hidden; opacity: 0; }
+    #notification.visible { visibility: visible; opacity: 1; }
+
+    @media (max-width: 480px) {
+      .main-content, #test-container {
+        width: 95%;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="../Imagenes/LOG2.jpg" alt="Logo Creavia">
+      <span>Creavia</span>
+    </div>
+    <button class="menu-btn" id="menu-btn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <nav class="menu-panel" id="menu-panel">
+    <a href="../index.html">Inicio</a>
+    <a href="test.html">Test</a>
+    <a href="habilidades.html">Habilidades</a>
+    <a href="cursos.html">Cursos</a>
+    <a href="register.html">Sesión</a>
+  </nav>
+
+  <div class="main-content">
+    <h2>Test </h2>
+    <p>Selecciona una de las siguientes facultades para comenzar el test especializado:</p>
+    <div class="options">
+      <button onclick="showTest('Educación')">Facultad de Educación</button>
+      <button onclick="showTest('Derecho')">Facultad de Derecho</button>
+      <button onclick="showTest('Ingeniería')">Facultad de Ingeniería</button>
+    </div>
+  </div>
+
+  <div id="test-container">
+    <div id="notification" class="hidden">
+      <img id="notification-icon" src="../Imagenes/png-transparent-computer-icons-desktop-completed-icon-angle-logo-monochrome.png" alt="Ícono de notificación">
+      <span id="notification-message"></span>
+    </div>
+
+    <form id="test-form">
+      <h3 id="test-title">Test para la Facultad</h3>
+
+      <div class="question-container">
+        <p>1. ¿Qué actividades disfrutas más?</p>
+        <div class="question-options">
+          <label><input type="radio" name="q1" value="a" required> Trabajo en equipo</label>
+          <label><input type="radio" name="q1" value="b"> Resolver problemas</label>
+          <label><input type="radio" name="q1" value="c"> Ayudar a los demás</label>
+        </div>
+      </div>
+
+      <div class="question-container">
+        <p>2. ¿Te interesa más?</p>
+        <div class="question-options">
+          <label><input type="radio" name="q2" value="a" required> La tecnología</label>
+          <label><input type="radio" name="q2" value="b"> Las ciencias sociales</label>
+          <label><input type="radio" name="q2" value="c"> Las artes</label>
+        </div>
+      </div>
+
+      <div class="question-container">
+        <p>3. ¿Cómo prefieres resolver los problemas?</p>
+        <div class="question-options">
+          <label><input type="radio" name="q3" value="a" required> Usando lógica y análisis</label>
+          <label><input type="radio" name="q3" value="b"> Interactuando con personas</label>
+          <label><input type="radio" name="q3" value="c"> Aplicando creatividad</label>
+        </div>
+      </div>
+
+      <div class="question-container">
+        <p>4. ¿Qué tan importante es para ti ayudar a los demás?</p>
+        <div class="question-options">
+          <label><input type="radio" name="q4" value="a" required> Muy importante</label>
+          <label><input type="radio" name="q4" value="b"> Algo importante</label>
+          <label><input type="radio" name="q4" value="c"> No tan importante</label>
+        </div>
+      </div>
+
+      <div class="question-container">
+        <p>5. ¿Te gustaría más trabajar en un ambiente?</p>
+        <div class="question-options">
+          <label><input type="radio" name="q5" value="a" required> De oficina</label>
+          <label><input type="radio" name="q5" value="b"> En el campo</label>
+          <label><input type="radio" name="q5" value="c"> Creativo y artístico</label>
+        </div>
+      </div>
+
+      <div class="options">
+        <button type="button" onclick="backToDashboard()">Volver al inicio</button>
+        <button type="submit">Ver resultado</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const menuPanel = document.getElementById('menu-panel');
+
+    menuBtn.addEventListener('click', () => {
+      menuBtn.classList.toggle('active');
+      menuPanel.classList.toggle('active');
+    });
+
+    function showTest(faculty) {
+      document.querySelector(".main-content").style.display = "none";
+      const testContainer = document.getElementById("test-container");
+      testContainer.style.display = "block";
+      document.getElementById("test-title").textContent = `Test para la Facultad de ${faculty}`;
+    }
+
+    document.getElementById("test-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      showNotification('¡Se ha realizado el test con éxito!');
+    });
+
+    function backToDashboard() {
+      window.location.href = "dashboard.html";
+    }
+
+    function showNotification(message) {
+      const notif = document.getElementById("notification");
+      const msg = document.getElementById("notification-message");
+      msg.textContent = message;
+      notif.classList.remove("hidden");
+      notif.classList.add("visible");
+      setTimeout(() => {
+        notif.classList.remove("visible");
+        notif.classList.add("hidden");
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>
