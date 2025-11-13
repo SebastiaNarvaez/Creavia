@@ -13,7 +13,7 @@ form.addEventListener('submit', async (e) => {
     };
 
     try {
-        const response = await fetch('/registrar', {
+        const response = await fetch('http://localhost:3000/registrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

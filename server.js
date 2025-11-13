@@ -9,7 +9,8 @@ const port = 3000;
 app.use(express.static(__dirname));
 
 // Middleware para procesar datos del formulario
-app.use(express.static(__dirname));
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
