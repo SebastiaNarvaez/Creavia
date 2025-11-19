@@ -1,346 +1,443 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creavia — Habilidades</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Creavia — Test Vocacional</title>
 
-  <style>
-    :root {
-      --amarillo: #f8efbc;
-      --verde: #6cdf8d;
-      --azul: #a0f8f8;
-      --fondo: #fafaf5;
-      --texto: #1c1c1c;
-    }
+<style>
+:root{
+  --bg:#f5f7fa;
+  --white:#ffffff;
+  --muted:#6b6b6b;
+  --light:#dfe6ef;
+  --primary:#2563eb;
+  --accent:#059669;
+  --radius:12px;
+  --card-shadow: 0 6px 18px rgba(20,30,60,0.06);
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+/* Base */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background:var(--bg);
+  color:var(--muted);
+}
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: var(--texto);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      background: var(--fondo);
-      overflow-x: hidden;
-      position: relative;
-    }
+/* Header */
+header{
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  background:var(--white);
+  padding:12px 28px;
+  box-shadow:0 2px 10px rgba(20,30,60,0.04);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  z-index:100;
+}
 
-    body::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 25% 30%, var(--azul) 0%, transparent 50%),
-        radial-gradient(circle at 75% 60%, var(--verde) 0%, transparent 60%),
-        radial-gradient(circle at 50% 80%, var(--amarillo) 0%, transparent 60%);
-      opacity: 0.7;
-      filter: blur(80px);
-      z-index: 0;
-      animation: moveWaves 25s infinite alternate ease-in-out;
-    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-    @keyframes moveWaves {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(-3%, -3%) scale(1.05); }
-    }
+.brand img{
+  width:44px;
+  height:44px;
+  border-radius:8px;
+  object-fit:cover;
+}
 
-    body::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url("../Imagenes/LOG2.png") no-repeat center center;
-      background-size: 400px auto;
-      opacity: 0.15;
-      z-index: 1;
-    }
+.brand .title{
+  font-weight:800;
+  color:#1f2937;
+  font-size:1.2rem;
+}
 
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 70px;
-      background: linear-gradient(90deg, var(--azul), var(--verde));
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-    }
+.nav-menu{
+  display:flex;
+  gap:18px;
+  align-items:center;
+}
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+.nav-menu a{
+  color:var(--muted);
+  text-decoration:none;
+  font-weight:700;
+}
 
-    .logo img {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px;
-    }
+.nav-menu a:hover{
+  color:var(--primary);
+}
 
-    .logo span {
-      font-weight: 800;
-      font-size: 1.2rem;
-      color: var(--texto);
-    }
+.nav-menu a.active{
+  color:var(--primary);
+}
 
-    .menu-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      position: relative;
-      z-index: 1100;
-    }
+/* Main */
+main{
+  margin:120px auto 60px;
+  width:92%;
+  max-width:900px;
+}
 
-    .menu-btn span {
-      position: absolute;
-      height: 3px;
-      width: 100%;
-      background: var(--texto);
-      border-radius: 2px;
-      left: 0;
-      transition: 0.3s ease;
-    }
+h1{
+  font-size:2rem;
+  color:#0f172a;
+  font-weight:800;
+}
 
-    .menu-btn span:nth-child(1) { top: 10px; }
-    .menu-btn span:nth-child(2) { top: 18px; }
-    .menu-btn span:nth-child(3) { top: 26px; }
+p.lead{
+  margin-top:6px;
+  color:#475569;
+}
 
-    .menu-btn.active span:nth-child(1) {
-      transform: rotate(45deg);
-      top: 18px;
-    }
+/* Category buttons */
+.cat-buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:12px 0 20px;
+}
 
-    .menu-btn.active span:nth-child(2) {
-      opacity: 0;
-    }
+.filter-btn{
+  padding:10px 14px;
+  background:var(--white);
+  border:1px solid var(--light);
+  border-radius:999px;
+  font-weight:700;
+  cursor:pointer;
+}
 
-    .menu-btn.active span:nth-child(3) {
-      transform: rotate(-45deg);
-      top: 18px;
-    }
+.filter-btn:hover{
+  border-color:var(--primary);
+  color:var(--primary);
+}
 
-    .menu-panel {
-      position: fixed;
-      top: 0;
-      right: -260px;
-      width: 250px;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      box-shadow: -4px 0 15px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 100px;
-      transition: right 0.4s ease;
-      z-index: 999;
-    }
+.filter-btn.active{
+  border-color:var(--primary);
+  color:var(--primary);
+  box-shadow:0 6px 18px rgba(37,99,235,0.10);
+}
 
-    .menu-panel.active { right: 0; }
+/* Classification lists */
+.clasificacion-box{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:16px;
+}
 
-    .menu-panel a {
-      text-decoration: none;
-      color: var(--texto);
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin: 15px 0;
-      transition: 0.3s;
-    }
+.clasificacion-box p{
+  background:#fff;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--light);
+  cursor:pointer;
+  font-weight:700;
+}
 
-    .menu-panel a:hover {
-      color: var(--azul);
-    }
+.clasificacion-box p:hover{
+  border-color:var(--primary);
+  color:var(--primary);
+}
 
-    main {
-      margin-top: 120px;
-      position: relative;
-      z-index: 10;
-      width: 90%;
-      max-width: 900px;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 16px;
-      padding: 34px;
-      box-shadow: 0 18px 40px rgba(10, 20, 40, 0.1);
-      text-align: center;
-    }
+/* Questions */
+.pregunta{
+  background:#fff;
+  border:1px solid var(--light);
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:12px;
+  display:flex;
+  justify-content:space-between;
+}
 
-    h2 {
-      color: var(--azul);
-      font-size: 2rem;
-      margin-bottom: 15px;
-      font-weight: 800;
-    }
+.scale{
+  display:flex;
+  gap:8px;
+}
 
-    p {
-      color: var(--texto);
-      margin-bottom: 25px;
-      font-size: 1.1rem;
-    }
+/* Buttons */
+.btn-primary{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  padding:9px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:800;
+}
 
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
-    }
+.btn-ghost{
+  background:transparent;
+  border:1px solid var(--light);
+  padding:9px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:700;
+}
 
-    .skill-card {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 12px;
-      padding: 20px;
-      width: 280px;
-      text-align: left;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-      transition: transform 0.2s, background 0.3s;
-      cursor: pointer;
-    }
+/* Result */
+.result-box{
+  background:#fff;
+  border:1px solid var(--light);
+  border-radius:12px;
+  padding:20px;
+  margin-top:20px;
+  box-shadow:var(--card-shadow);
+  display:none;
+}
 
-    .skill-card:hover {
-      transform: translateY(-5px);
-      background: var(--azul);
-    }
+.result-box h3{
+  margin-top:0;
+}
 
-    .skill-card h3 {
-      color: var(--verde);
-      margin-bottom: 10px;
-    }
-
-    .skill-card ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .skill-card li {
-      margin-bottom: 8px;
-      font-size: 1rem;
-    }
-
-    /* Sección de evaluación */
-    #evaluacion {
-      display: none;
-    }
-
-    .btn-volver {
-      background: var(--verde);
-      border: none;
-      color: var(--texto);
-      padding: 12px 25px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-weight: 700;
-      margin-top: 20px;
-      transition: 0.3s ease;
-    }
-
-    .btn-volver:hover {
-      background: var(--azul);
-    }
-
-    @media (max-width: 480px) {
-      main {
-        width: 90%;
-        padding: 20px;
-      }
-    }
-  </style>
+</style>
 </head>
 
 <body>
 
-  <header>
-    <div class="logo">
-      <img src="../Imagenes/LOG2.png" alt="Logo Creavia">
-      <span>Creavia</span>
-    </div>
-    <button class="menu-btn" id="menu-btn">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </header>
+<header>
+  <div class="brand">
+    <img src="../Imagenes/LOG2.jpg" alt="Logo Creavia">
+    <div class="title">Creavia</div>
+  </div>
 
-  <nav class="menu-panel" id="menu-panel">
+  <nav class="nav-menu">
     <a href="../index.html">Inicio</a>
-    <a href="test.html">Test </a>
     <a href="habilidades.html">Habilidades</a>
     <a href="cursos.html">Cursos</a>
     <a href="sesion.html">Iniciar Sesión</a>
   </nav>
+</header>
 
-  <main>
-    <!-- SECCIÓN PRINCIPAL -->
-    <section id="principal">
-      <h2>Habilidades Duras y Blandas</h2>
-      <p>Conoce las habilidades que fortalecen tu crecimiento personal y profesional.</p>
+<main>
+  <h1>Test Vocacional</h1>
+  <p class="lead">Selecciona una categoría y responde cada grupo de preguntas.</p>
 
-      <div class="skills">
-        <div class="skill-card" onclick="mostrarEvaluacion('duras')">
-          <h3>💼 Habilidades Duras</h3>
-          <ul>
-            <li>Manejo de software especializado</li>
-            <li>Programación y análisis de datos</li>
-            <li>Dominio de idiomas</li>
-            <li>Diseño y modelado digital</li>
-            <li>Gestión de proyectos</li>
-          </ul>
-        </div>
+  <!-- Botones grandes -->
+  <div class="cat-buttons">
+    <button class="filter-btn" onclick="toggleClasificacionBlandas()">Habilidades blandas</button>
+    <button class="filter-btn" onclick="toggleClasificacionDuras()">Habilidades duras</button>
+    <button class="filter-btn" id="btn-final" style="display:none" onclick="mostrarResultadoFinal()">Resultado final</button>
+  </div>
 
-        <div class="skill-card" onclick="mostrarEvaluacion('blandas')">
-          <h3>🤝 Habilidades Blandas</h3>
-          <ul>
-            <li>Comunicación efectiva</li>
-            <li>Trabajo en equipo</li>
-            <li>Liderazgo</li>
-            <li>Empatía y adaptabilidad</li>
-            <li>Pensamiento crítico</li>
-          </ul>
+  <!-- Listas -->
+  <div id="clasificacion-blandas" class="clasificacion-box" style="display:none"></div>
+  <div id="preguntas-blandas"></div>
+  <div id="clasificacion-duras" class="clasificacion-box" style="display:none"></div>
+  <div id="preguntas-duras"></div>
+
+  <!-- Resultado final -->
+  <div id="resultado-final" class="result-box"></div>
+
+</main>
+
+<script>
+
+/* ---------------------- PREGUNTAS ---------------------- */
+const preguntasBlandas = {
+  interpersonales:[
+    "¿Cómo manejas los desacuerdos con otras personas?",
+    "¿Qué tan fácil se te hace trabajar en equipo?",
+    "¿Cómo inicias una conversación con alguien nuevo?",
+    "¿Qué haces para resolver un conflicto?",
+    "¿Cómo reaccionas cuando una persona no cumple su parte?",
+    "¿Escuchas activamente cuando alguien habla?",
+    "¿Te consideras empático?",
+    "¿Cómo apoyas a tus compañeros?",
+    "¿Te adaptas a diferentes personalidades?",
+    "¿Cómo te comunicas cuando algo no te parece?"
+  ],
+  intrapersonales:[
+    "¿Qué haces cuando sientes mucha presión?",
+    "¿Cómo manejas tus emociones?",
+    "¿Qué tan organizado eres?",
+    "¿Cómo te motivas en momentos difíciles?",
+    "¿Reconoces tus errores con facilidad?",
+    "¿Qué haces para mejorar tus debilidades?",
+    "¿Eres disciplinado?",
+    "¿Cómo manejas el estrés?",
+    "¿Cómo te mantienes enfocado?",
+    "¿Cómo te recuperas de una falla?"
+  ],
+  cognitivas:[
+    "¿Cómo resuelves un problema cuando no sabes la solución?",
+    "¿Qué tan rápido aprendes cosas nuevas?",
+    "¿Cómo tomas decisiones importantes?",
+    "¿Cómo recuerdas información?",
+    "¿Cómo analizas un reto complicado?",
+    "¿Te consideras creativo?",
+    "¿Qué haces cuando estás bloqueado mentalmente?",
+    "¿Cómo organizas ideas?",
+    "¿Cómo evalúas consecuencias?",
+    "¿Cómo encuentras soluciones diferentes?"
+  ]
+};
+
+const preguntasDuras = {
+  tecnologicas:[
+    "¿Qué tan hábil eres usando software especializado?",
+    "¿Te gusta resolver problemas técnicos?",
+    "¿Te sientes cómodo con la programación?",
+    "¿Te interesa cómo funcionan los dispositivos?",
+    "¿Qué tanto disfrutas crear o reparar cosas?",
+    "¿Aprendes rápido herramientas digitales?",
+    "¿Te interesa ingeniería o tecnología?",
+    "¿Te gustan los sistemas lógicos?",
+    "¿Te adaptas a herramientas nuevas?",
+    "¿Disfrutas resolver retos técnicos?"
+  ],
+  creativas:[
+    "¿Te gusta dibujar o diseñar?",
+    "¿Te interesa arte, música o fotografía?",
+    "¿Imaginas ideas nuevas fácilmente?",
+    "¿Combinas colores con facilidad?",
+    "¿Te gusta escribir historias?",
+    "¿Te inspiras fácilmente?",
+    "¿Te gusta expresarte?",
+    "¿Tienes buena percepción visual?",
+    "¿Creas ideas originales?",
+    "¿Disfrutas edición o arte?"
+  ],
+  administrativas:[
+    "¿Te gusta organizar tareas?",
+    "¿Te gustan los números o datos?",
+    "¿Gestionas bien el tiempo?",
+    "¿Te interesa el mundo empresarial?",
+    "¿Te gusta planear actividades?",
+    "¿Te adaptas a entornos estructurados?",
+    "¿Eres hábil con trámites?",
+    "¿Te gustan actividades contables?",
+    "¿Sigues procesos fácilmente?",
+    "¿Te ves trabajando en oficina?"
+  ]
+};
+
+/* ---------------------- CONTRIBUCIONES ---------------------- */
+const contribuciones = {
+  interpersonales:{social:1},
+  intrapersonales:{administrativo:0.5,salud:0.5},
+  cognitivas:{tecnologico:0.6,creativo:0.4},
+  tecnologicas:{tecnologico:1},
+  creativas:{creativo:1},
+  administrativas:{administrativo:1}
+};
+
+const storedCategoryScores = {};
+const profileTotals = {tecnologico:0,creativo:0,social:0,salud:0,administrativo:0};
+
+/* ---------------------- UI LOGIC ---------------------- */
+
+function toggleClasificacionBlandas(){
+  document.getElementById('clasificacion-blandas').style.display="block";
+  document.getElementById('clasificacion-duras').style.display="none";
+  renderClasificaciones('blandas');
+}
+
+function toggleClasificacionDuras(){
+  document.getElementById('clasificacion-blandas').style.display="none";
+  document.getElementById('clasificacion-duras').style.display="block";
+  renderClasificaciones('duras');
+}
+
+function renderClasificaciones(tipo){
+  let cont = tipo==='blandas' ? document.getElementById('clasificacion-blandas') : document.getElementById('clasificacion-duras');
+  cont.innerHTML="";
+
+  const grupo = tipo==='blandas' ? preguntasBlandas : preguntasDuras;
+
+  Object.keys(grupo).forEach(sub=>{
+    const p = document.createElement("p");
+    p.textContent = sub.toUpperCase();
+    p.onclick = ()=> mostrarPreguntas(tipo, sub);
+    cont.appendChild(p);
+  });
+}
+
+function mostrarPreguntas(tipo, sub){
+  const cont = tipo==='blandas' ? document.getElementById('preguntas-blandas') : document.getElementById('preguntas-duras');
+  const grupo = tipo==='blandas' ? preguntasBlandas[sub] : preguntasDuras[sub];
+
+  document.getElementById('clasificacion-blandas').style.display="none";
+  document.getElementById('clasificacion-duras').style.display="none";
+
+  cont.innerHTML = `
+  <h3>${sub.toUpperCase()}</h3>
+  <form id="form-${sub}">
+    ${grupo.map((q,i)=>`
+      <div class="pregunta">
+        <div>${q}</div>
+        <div class="scale">
+          ${[1,2,3,4,5].map(v=>`
+            <label>${v}<input type="radio" name="${sub}_q${i}" value="${v}" required></label>
+          `).join("")}
         </div>
       </div>
-    </section>
+    `).join("")}
 
-    <!-- SECCIÓN DE EVALUACIÓN -->
-    <section id="evaluacion">
-      <h2>Evalúa tus habilidades</h2>
-      <p>Reflexiona sobre tus fortalezas y áreas de mejora. Este es un paso importante hacia tu desarrollo profesional.</p>
-      <button class="btn-volver" onclick="volverInicio()">⬅ Volver</button>
-    </section>
-  </main>
+    <button class="btn-primary" type="submit">Guardar resultado</button>
+    <button type="button" class="btn-ghost" onclick="volver()">Volver</button>
+  </form>
+  `;
 
-  <script>
-    const menuBtn = document.getElementById('menu-btn');
-    const menuPanel = document.getElementById('menu-panel');
+  document.getElementById(`form-${sub}`).onsubmit = (e)=>{
+    e.preventDefault();
+    guardarCategoria(sub, tipo);
+  }
+}
 
-    menuBtn.addEventListener('click', () => {
-      menuBtn.classList.toggle('active');
-      menuPanel.classList.toggle('active');
-    });
+function guardarCategoria(sub, tipo){
+  const checked = [...document.querySelectorAll(`#form-${sub} input:checked`)];
+  const promedio = checked.reduce((t,i)=>t+Number(i.value),0) / checked.length;
 
-    function mostrarEvaluacion(tipo) {
-      document.getElementById('principal').style.display = 'none';
-      const evalSection = document.getElementById('evaluacion');
-      evalSection.style.display = 'block';
-      evalSection.scrollIntoView({ behavior: "smooth" });
+  storedCategoryScores[sub] = promedio;
+
+  Object.keys(contribuciones[sub]).forEach(area=>{
+    profileTotals[area] += promedio * contribuciones[sub][area];
+  });
+
+  volver();
+  
+  const total = Object.keys(preguntasBlandas).length + Object.keys(preguntasDuras).length;
+  if(Object.keys(storedCategoryScores).length === total){
+    document.getElementById("btn-final").style.display="inline-block";
+  }
+}
+
+function volver(){
+  document.getElementById('preguntas-blandas').innerHTML="";
+  document.getElementById('preguntas-duras').innerHTML="";
+  toggleClasificacionBlandas();
+  toggleClasificacionDuras();
+}
+
+function mostrarResultadoFinal(){
+  const totalAreas = Object.keys(profileTotals);
+  let mejor = totalAreas[0];
+  
+  totalAreas.forEach(a=>{
+    if(profileTotals[a] > profileTotals[mejor]){
+      mejor = a;
     }
+  });
 
-    function volverInicio() {
-      document.getElementById('evaluacion').style.display = 'none';
-      document.getElementById('principal').style.display = 'block';
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  </script>
+  const box = document.getElementById('resultado-final');
+  box.style.display="block";
+  box.innerHTML = `
+    <h3>Resultado final</h3>
+    <p>Tu perfil más fuerte es: <strong>${mejor.toUpperCase()}</strong></p>
+  `;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+</script>
+
 </body>
 </html>

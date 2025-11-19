@@ -6,272 +6,169 @@
   <title>Registro de Usuario — Creavia</title>
 
   <style>
-    :root {
-      --amarillo: #f8efbc;
-      --verde: #6cdf8d;
-      --azul: #a0f8f8;
-      --fondo: #FAFAF5;
-      --texto: #1C1C1C;
+    :root{
+      --bg:#f5f7fa;
+      --white:#ffffff;
+      --muted:#6b6b6b;
+      --light:#dfe6ef;
+      --primary:#2563eb;
+      --accent:#059669;
+      --radius:12px;
+      --card-shadow: 0 6px 18px rgba(20,30,60,0.06);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body{
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      position:relative;
+      overflow:hidden;
+      background:var(--bg);
+      color:var(--muted);
     }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: var(--texto);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      background: var(--fondo);
-    }
-
-    /* Fondo pastel */
+    /* Fondo pastel con ondas */
     body::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+      content:"";
+      position:absolute;
+      inset:0;
       background: 
-        radial-gradient(circle at 25% 30%, var(--azul) 0%, transparent 50%),
-        radial-gradient(circle at 75% 60%, var(--verde) 0%, transparent 60%),
-        radial-gradient(circle at 50% 80%, var(--amarillo) 0%, transparent 60%);
-      opacity: 0.7;
-      filter: blur(80px);
-      z-index: 0;
+        radial-gradient(circle at 25% 30%, var(--primary) 0%, transparent 50%),
+        radial-gradient(circle at 75% 60%, var(--accent) 0%, transparent 60%),
+        radial-gradient(circle at 50% 80%, #f8efbc 0%, transparent 60%);
+
+      opacity:0.7;
+      filter:blur(80px);
+      z-index:0;
       animation: moveWaves 25s infinite alternate ease-in-out;
     }
-
     @keyframes moveWaves {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(-3%, -3%) scale(1.05); }
+      0% { transform: translate(0,0) scale(1);}
+      100% { transform: translate(-3%,-3%) scale(1.05);}
     }
 
     /* Logo de fondo */
-    body::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url("../Imagenes/LOG2.jpg") no-repeat center center;
-      background-size: 400px auto;
-      opacity: 0.15;
-      z-index: 1;
+    body::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:url("../Imagenes/LOG2.jpg") no-repeat center center;
+      background-size:400px auto;
+      opacity:0.15;
+      z-index:1;
     }
 
-    /* HEADER */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 70px;
-      background: linear-gradient(90deg, var(--verde), var(--azul));
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 30px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
+    /* HEADER — estilo igual al archivo anterior */
+    header{
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      height:70px;
+      background:var(--white);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0 30px;
+      box-shadow:0 2px 10px rgba(20,30,60,0.04);
+      z-index:1000;
     }
 
-    /* LOGO IZQUIERDO */
-    .header-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .header-logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .header-logo img{
+      height:55px;
+      width:auto;
+      border-radius:var(--radius);
+    }
+    .header-logo span{
+      font-size:1.5rem;
+      font-weight:800;
+      color:#1f2937;
     }
 
-    .header-logo img {
-      height: 55px;
-      width: auto;
-      border-radius: 8px;
+    /* MENÚ HORIZONTAL */
+    nav {
+      display:flex;
+      gap:25px;
+      align-items:center;
     }
 
-    .header-logo span {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #1c1c1c;
-      letter-spacing: 1px;
+    nav a {
+      text-decoration:none;
+      font-weight:700;
+      color:var(--muted);
+      font-size:1rem;
+      transition:0.25s;
     }
-
-    /* BOTÓN DE MENÚ */
-    .menu-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      position: relative;
-      z-index: 1100;
-    }
-
-    .menu-btn span {
-      position: absolute;
-      height: 3px;
-      width: 100%;
-      background: var(--texto);
-      border-radius: 2px;
-      left: 0;
-      transition: 0.3s ease;
-    }
-
-    .menu-btn span:nth-child(1) { top: 10px; }
-    .menu-btn span:nth-child(2) { top: 18px; }
-    .menu-btn span:nth-child(3) { top: 26px; }
-
-    .menu-btn.active span:nth-child(1) {
-      transform: rotate(45deg);
-      top: 18px;
-    }
-    .menu-btn.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .menu-btn.active span:nth-child(3) {
-      transform: rotate(-45deg);
-      top: 18px;
-    }
-
-    /* MENÚ LATERAL */
-    .menu-panel {
-      position: fixed;
-      top: 0;
-      right: -260px;
-      width: 250px;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      box-shadow: -4px 0 15px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 80px;
-      transition: right 0.4s ease;
-      z-index: 999;
-    }
-
-    .menu-panel.active {
-      right: 0;
-    }
-
-    .menu-panel img {
-      width: 120px;
-      opacity: 0.8;
-      margin-bottom: 25px;
-      border-radius: 10px;
-    }
-
-    .menu-panel a {
-      text-decoration: none;
-      color: var(--texto);
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin: 15px 0;
-      transition: 0.3s;
-    }
-
-    .menu-panel a:hover {
-      color: var(--azul);
+    nav a:hover {
+      color:var(--primary);
     }
 
     /* FORMULARIO */
-    main {
-      position: relative;
-      z-index: 10;
-      margin-top: 100px;
+    main{
+      position:relative;
+      z-index:10;
+      margin-top:100px;
     }
 
-    .form-section {
-      width: 380px;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 16px;
-      padding: 34px;
-      box-shadow: 0 18px 40px rgba(10, 20, 40, 0.1);
-      backdrop-filter: blur(10px);
-      text-align: center;
+    .form-section{
+      width:380px;
+      background:var(--white);
+      border-radius:var(--radius);
+      padding:34px;
+      box-shadow:var(--card-shadow);
+      backdrop-filter:blur(10px);
+      text-align:center;
+    }
+    .form-section h2{
+      color:var(--primary);
+      margin-bottom:12px;
+      font-size:2rem;
+      font-weight:800;
+    }
+    .form-section input{
+      width:100%;
+      padding:12px 14px;
+      margin-bottom:12px;
+      border-radius:var(--radius);
+      border:1px solid var(--light);
+      font-size:1rem;
+      outline:none;
+    }
+    .form-section input:focus{
+      border-color:var(--primary);
+      box-shadow:0 4px 18px rgba(37,99,235,0.08);
     }
 
-    .form-section h2 {
-      color: var(--azul);
-      margin-bottom: 10px;
-      font-size: 2rem;
-      font-weight: 800;
+    .form-section button{
+      background:var(--accent);
+      color:var(--white);
+      border:none;
+      border-radius:var(--radius);
+      padding:12px 0;
+      font-weight:700;
+      font-size:1rem;
+      cursor:pointer;
+      transition:0.2s;
+      margin-top:10px;
+    }
+    .form-section button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 6px 18px rgba(5,150,105,0.15);
     }
 
-    .form-section input {
-      width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(0,0,0,0.15);
-      font-size: 1rem;
-    }
-
-    .form-section button {
-      background: var(--verde);
-      color: var(--texto);
-      border: none;
-      border-radius: 999px;
-      padding: 12px 30px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.2s ease;
-      margin-top: 10px;
-    }
-
-    .form-section button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
-
-    /* NOTIFICACIÓN */
-    #notification {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgb(53, 53, 238);
-      color: white;
-      padding: 20px;
-      font-size: 18px;
-      text-align: left;
-      border-radius: 5px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      max-width: 90%;
-      min-width: 200px;
-      height: auto;
-      transition: opacity 0.5s ease-in-out;
-    }
-
-    #notification-icon {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-    }
-
-    #notification-message {
-      flex: 1;
-      word-wrap: break-word;
-    }
-
-    .hidden { visibility: hidden; opacity: 0; }
-    .visible { visibility: visible; opacity: 1; }
-
-    @media (max-width: 480px) {
-      .form-section {
-        width: 90%;
-        padding: 20px;
+    @media(max-width:480px){
+      nav {
+        gap:15px;
       }
+      .form-section{width:95%;}
+      .form-section h2{font-size:1.6rem;}
     }
   </style>
 </head>
@@ -279,27 +176,21 @@
 
   <header>
     <div class="header-logo">
-      <img src="../Imagenes/LOG2.jpg" alt="Logo Creavia" />
+      <img src="../Imagenes/LOG2.jpg" alt="Logo Creavia">
       <span>CREAVIA</span>
     </div>
 
-    <button class="menu-btn" id="menu-btn">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+    <nav>
+      <a href="sesion.html">Inicio de Sesión</a>
+      <a href="register.html">Registro</a>
+      <a href="../index.html">Página Principal</a>
+    </nav>
   </header>
-
-  <nav class="menu-panel" id="menu-panel">
-    <img src="../Imagenes/LOG2.png" alt="Logo Creavia" />
-    <a href="sesion.html">Inicio de Sesión</a>
-    <a href="register.html">Crear Cuenta</a>
-    <a href="../index.html">Página Principal</a>
-  </nav>
 
   <main>
     <div class="form-section">
       <h2>Registro</h2>
+
       <form id="registro-form">
         <input type="text" name="nombres" placeholder="Nombres" required />
         <input type="text" name="apellidos" placeholder="Apellidos" required />
@@ -311,22 +202,8 @@
     </div>
   </main>
 
-  <div id="notification" class="hidden">
-    <img id="notification-icon" src="../Imagenes/png-transparent-computer-icons-desktop-completed-icon-angle-logo-monochrome.png" alt="Ícono de notificación">
-    <span id="notification-message"></span>
-  </div>
-
-  <script>
-    const menuBtn = document.getElementById('menu-btn');
-    const menuPanel = document.getElementById('menu-panel');
-
-    menuBtn.addEventListener('click', () => {
-      menuBtn.classList.toggle('active');
-      menuPanel.classList.toggle('active');
-    });
-  </script>
-
   <script src="register.js"></script>
   <script src="notificacion.js"></script>
+
 </body>
 </html>

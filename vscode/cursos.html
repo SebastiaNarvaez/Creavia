@@ -1,409 +1,1549 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creavia — Cursos</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Creavia — Catálogo de Cursos (Premium)</title>
 
   <style>
-    :root {
-      --amarillo: #f8efbc;
-      --verde: #6cdf8d;
-      --azul: #a0f8f8;
-      --fondo: #fafaf5;
-      --texto: #1c1c1c;
+    :root{
+      --bg:#f5f7fa;
+      --white:#ffffff;
+      --muted:#6b6b6b;
+      --light:#dfe6ef;
+      --primary:#2563eb;
+      --accent:#059669;
+      --radius:12px;
+      --card-shadow: 0 6px 18px rgba(20,30,60,0.06);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background:var(--bg);
+      color:var(--muted);
+      display:flex;
+      justify-content:center;
+      min-height:100vh;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* Header */
+    header{
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      background:var(--white);
+      padding:12px 28px;
+      box-shadow:0 2px 10px rgba(20,30,60,0.04);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      z-index:100;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+    .brand .title{font-weight:800;color:#1f2937;font-size:1.2rem}
+    nav a{margin-left:18px;color:var(--muted);text-decoration:none;font-weight:600}
+    nav a:hover{color:var(--primary)}
+
+    /* Main container */
+    main{
+      margin:112px auto 80px;
+      width:92%;
+      max-width:1200px;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:2rem;
+      color:#0f172a;
+      font-weight:800;
+    }
+    p.lead{margin:6px 0 18px;color:#475569}
+
+    /* Search & filters */
+    .controls{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .search{
+      flex:1 1 420px;
+    }
+    .search input{
+      width:100%;
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid var(--light);
+      background:var(--white);
+      font-size:1rem;
+      outline:none;
+      transition:box-shadow .18s, border-color .18s;
+    }
+    .search input:focus{box-shadow:0 4px 18px rgba(37,99,235,0.08);border-color:var(--primary)}
+
+    .filters{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .filter-btn{
+      padding:10px 14px;
+      background:var(--white);
+      border:1px solid var(--light);
+      border-radius:999px;
+      font-weight:700;
+      color:#334155;
+      cursor:pointer;
+    }
+    .filter-btn.active{border-color:var(--primary);color:var(--primary);box-shadow:0 6px 18px rgba(37,99,235,0.06)}
+
+    /* Grid of cards */
+    .grid{
+      margin-top:22px;
+      display:grid;
+      gap:20px;
+      grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
     }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: var(--texto);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      background: var(--fondo);
-      overflow-x: hidden;
-      position: relative;
+    .card{
+      background:var(--white);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--card-shadow);
+      transition:transform .18s, box-shadow .18s;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
+    .card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(20,30,60,0.08)}
 
-    /* Fondo pastel animado */
-    body::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 25% 30%, var(--azul) 0%, transparent 50%),
-        radial-gradient(circle at 75% 60%, var(--verde) 0%, transparent 60%),
-        radial-gradient(circle at 50% 80%, var(--amarillo) 0%, transparent 60%);
-      opacity: 0.7;
-      filter: blur(80px);
-      z-index: 0;
-      animation: moveWaves 25s infinite alternate ease-in-out;
+    .card-head{display:flex;align-items:center;gap:12px}
+    .card-head .icon{font-size:1.7rem;color:var(--primary);width:48px;height:48px;border-radius:10px;background:linear-gradient(180deg, rgba(37,99,235,0.08), rgba(37,99,235,0.03));display:flex;align-items:center;justify-content:center}
+    .card-head h3{margin:0;font-size:1.06rem;color:#0f172a}
+    .card-desc{margin:0;color:#475569;font-size:0.95rem;line-height:1.45}
+
+    .card-actions{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:6px}
+    .btn-primary{
+      background:var(--accent);
+      color:#fff;border:none;padding:9px 14px;border-radius:10px;font-weight:800;cursor:pointer;
+      box-shadow:0 6px 16px rgba(5,150,105,0.09);
     }
+    .btn-ghost{background:transparent;border:1px solid var(--light);padding:8px 12px;border-radius:10px;cursor:pointer;color:#334155;font-weight:700}
 
-    @keyframes moveWaves {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      100% {
-        transform: translate(-3%, -3%) scale(1.05);
-      }
+    /* Details expanded */
+    .details{
+      margin-top:6px;
+      border-top:1px solid var(--light);
+      padding-top:14px;
+      display:none;
+      gap:12px;
     }
+    .details.show{display:block}
 
-    /* Logo de fondo */
-    body::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: url("../Imagenes/LOG2.png") no-repeat center center;
-      background-size: 400px auto;
-      opacity: 0.1;
-      z-index: 1;
+    .details h4{margin:0 0 8px;font-size:1rem;color:#0f172a}
+    .areas{
+      display:grid;
+      gap:10px;
+      grid-template-columns:repeat(auto-fit, minmax(190px,1fr));
     }
-
-    /* HEADER */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 70px;
-      background: linear-gradient(90deg, var(--azul), var(--verde));
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
+    .area{
+      display:flex;gap:10px;align-items:center;padding:10px;border-radius:10px;background:linear-gradient(180deg, #ffffff, #fbfdff);
+      border:1px solid #eef3ff;
     }
+    .area .ai{width:40px;height:40px;border-radius:9px;background:#eef6ff;display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:1.1rem}
+    .area p{margin:0;font-weight:700;color:#0f172a;font-size:0.95rem}
 
-    /* LOGO */
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .exp-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+    .exp{
+      display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;background:#fff;border:1px solid #eef3ff;
+      box-shadow:0 6px 12px rgba(16,24,40,0.02)
     }
+    .exp .avatar{width:44px;height:44px;border-radius:50%;background:#f0f9ff;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary)}
+    .exp .text{font-size:0.94rem;color:#334155}
 
-    .logo img {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px;
-    }
-
-    .logo span {
-      font-weight: 800;
-      font-size: 1.2rem;
-      color: var(--texto);
-    }
-
-    /* MENÚ HAMBURGUESA */
-    .menu-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      position: relative;
-      z-index: 1100;
-    }
-
-    .menu-btn span {
-      position: absolute;
-      height: 3px;
-      width: 100%;
-      background: var(--texto);
-      border-radius: 2px;
-      left: 0;
-      transition: 0.3s ease;
-    }
-
-    .menu-btn span:nth-child(1) {
-      top: 10px;
-    }
-
-    .menu-btn span:nth-child(2) {
-      top: 18px;
-    }
-
-    .menu-btn span:nth-child(3) {
-      top: 26px;
-    }
-
-    .menu-btn.active span:nth-child(1) {
-      transform: rotate(45deg);
-      top: 18px;
-    }
-
-    .menu-btn.active span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .menu-btn.active span:nth-child(3) {
-      transform: rotate(-45deg);
-      top: 18px;
-    }
-
-    /* PANEL LATERAL */
-    .menu-panel {
-      position: fixed;
-      top: 0;
-      right: -260px;
-      width: 250px;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 100px;
-      transition: right 0.4s ease;
-      z-index: 999;
-    }
-
-    .menu-panel.active {
-      right: 0;
-    }
-
-    .menu-panel a {
-      text-decoration: none;
-      color: var(--texto);
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin: 15px 0;
-      transition: 0.3s;
-    }
-
-    .menu-panel a:hover {
-      color: var(--azul);
-    }
-
-    /* CONTENIDO */
-    main {
-      margin-top: 120px;
-      position: relative;
-      z-index: 10;
-      width: 90%;
-      max-width: 1000px;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 18px 40px rgba(10, 20, 40, 0.1);
-      text-align: center;
-    }
-
-    h2 {
-      color: var(--azul);
-      font-size: 2rem;
-      margin-bottom: 20px;
-      font-weight: 800;
-    }
-
-    .options button {
-      background: var(--verde);
-      color: var(--texto);
-      border: none;
-      border-radius: 999px;
-      padding: 12px 28px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s ease;
-      margin: 10px;
-    }
-
-    .options button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    /* UNIVERSIDADES */
-    .universities-container {
-      margin-top: 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .university-card {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 14px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-      width: 230px;
-      padding: 1rem;
-      transition: transform 0.3s, box-shadow 0.3s;
-      cursor: pointer;
-    }
-
-    .university-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .university-card img {
-      width: 100%;
-      border-radius: 10px;
-    }
-
-    .university-card h3 {
-      margin-top: 10px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--texto);
-    }
-
-    /* CARRERAS */
-    .careers-container {
-      margin-top: 2rem;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-      display: none;
-    }
-
-    .career-list {
-      list-style: none;
-      padding: 0;
-      text-align: left;
-    }
-
-    .career-list li {
-      margin: 8px 0;
-      font-weight: 600;
-      color: var(--texto);
-    }
-
-    @media (max-width: 600px) {
-      main {
-        padding: 25px;
-      }
-
-      .university-card {
-        width: 90%;
-      }
+    /* Responsive tweaks */
+    @media (max-width:720px){
+      header{padding:10px 14px}
+      main{margin-top:100px;width:95%}
+      .controls{flex-direction:column;align-items:stretch}
     }
   </style>
 </head>
-
 <body>
+
+  <!-- HEADER -->
   <header>
-    <div class="logo">
-      <img src="../Imagenes/LOG2.jpg" alt="Logo Creavia" />
-      <span>Creavia</span>
+    <div class="brand">
+      <img src="../Imagenes/LOG2.jpg" alt="Creavia logo" />
+      <div>
+        <div class="title">Creavia</div>
+        <div style="font-size:12px;color:#64748b">Orientación · Cursos · Carreras</div>
+      </div>
     </div>
-    <button class="menu-btn" id="menu-btn">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="habilidades.html">Habilidades</a>
+      <a href="cursos.html">Cursos</a>
+      <a href="sesion.html">Iniciar sesión</a>
+    </nav>
   </header>
 
-  <nav class="menu-panel" id="menu-panel">
-    <a href="../index.html">Inicio</a>
-    <a href="test.html">Test </a>
-    <a href="habilidades.html">Habilidades</a>
-    <a href="cursos.html">Cursos</a>
-    <a href="sesion.html">Iniciar Sesión</a>
-  </nav>
-
+  <!-- MAIN -->
   <main>
-    <h2>Cursos</h2>
-    <div class="maintenance-message">
-        <p>Lo sentimos, estamos trabajando para que funcione este apartado.</p>
-    </div>
-</main>
+    <h1>Catálogo Premium de Carreras</h1>
+    <p class="lead">Descubre las áreas de desempeño y testimonios reales. Haz clic en "Ver detalles" para ampliar la información de cada programa.</p>
 
+    <div class="controls">
+      <div class="search">
+        <input id="q" placeholder="Buscar por carrera, área o palabra clave..." oninput="filtrar()"/>
+      </div>
+
+      <div class="filters" role="tablist" aria-label="Filtros de categoría">
+        <button class="filter-btn active" onclick="filtrarCategoria('all', this)">Todos</button>
+        <button class="filter-btn" onclick="filtrarCategoria('tecnologia', this)">Tecnología</button>
+        <button class="filter-btn" onclick="filtrarCategoria('salud', this)">Salud</button>
+        <button class="filter-btn" onclick="filtrarCategoria('derecho', this)">Derecho</button>
+        <button class="filter-btn" onclick="filtrarCategoria('educacion', this)">Educación</button>
+      </div>
+    </div>
+
+    <!-- GRID: Todas las carreras como tarjetas resumidas -->
+    <section class="grid" id="catalog">
+
+      <!-- ===================== TECNOLOGÍA (10) ===================== -->
+      <!-- 1 -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">💻</div>
+          <div>
+            <h3>Ingeniería de Software</h3>
+            <p class="card-desc">Formación en diseño, pruebas y mantenimiento de aplicaciones a gran escala.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Nivel: Profesional · Duración estimada: 4 años</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('sw')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Ingeniería de Software')">Más información</button>
+          </div>
+        </div>
+
+        <div id="sw" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧩</div><p>Arquitectura de Software</p></div>
+            <div class="area"><div class="ai">⚙️</div><p>Desarrollo Backend</p></div>
+            <div class="area"><div class="ai">🎨</div><p>Frontend y UX</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Testing y QA</p></div>
+            <div class="area"><div class="ai">🔁</div><p>DevOps y CI/CD</p></div>
+            <div class="area"><div class="ai">📦</div><p>Microservicios</p></div>
+            <div class="area"><div class="ai">🔒</div><p>Seguridad de Aplicaciones</p></div>
+            <div class="area"><div class="ai">📈</div><p>Escalabilidad y rendimiento</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">MA</div><div class="text"><strong>María — Líder de Equipo</strong><br>Gestiona equipos ágiles y aplica prácticas DevOps para entregas continuas en producto.</div></div>
+            <div class="exp"><div class="avatar">JP</div><div class="text"><strong>Jhon — QA Senior</strong><br>Especialista en automatización de pruebas y diseño de pipelines de integración.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2 -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">🖥️</div>
+          <div>
+            <h3>Ingeniería de Sistemas</h3>
+            <p class="card-desc">Cobertura amplia: redes, infra, software y gestión de TI.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Nivel: Profesional · Modalidad: Presencial/Virtual</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('sis')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Ingeniería de Sistemas')">Más información</button>
+          </div>
+        </div>
+
+        <div id="sis" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🖧</div><p>Administración de redes</p></div>
+            <div class="area"><div class="ai">🗄️</div><p>Gestión de bases de datos</p></div>
+            <div class="area"><div class="ai">📡</div><p>Infraestructura y DevOps</p></div>
+            <div class="area"><div class="ai">🔐</div><p>Políticas y seguridad TI</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Arquitectura empresarial</p></div>
+            <div class="area"><div class="ai">📊</div><p>Análisis de sistemas</p></div>
+            <div class="area"><div class="ai">🤖</div><p>Automatización y RPA</p></div>
+            <div class="area"><div class="ai">🔧</div><p>Soporte y operación</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">MI</div><div class="text"><strong>Milton — Administrador de Sistemas</strong><br>Implementó infra escalable en la nube y mejores prácticas de monitoreo.</div></div>
+            <div class="exp"><div class="avatar">DL</div><div class="text"><strong>Diana — Analista de TI</strong><br>Coordina despliegues y asegura continuidad operativa en entornos críticos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3 Ciencia de Datos -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">📊</div>
+          <div>
+            <h3>Ciencia de Datos</h3>
+            <p class="card-desc">Modelos, análisis y visualización para decisiones basadas en datos.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Nivel: Especialización · Demanda creciente</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('cd')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Ciencia de Datos')">Más información</button>
+          </div>
+        </div>
+
+        <div id="cd" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧠</div><p>Modelado predictivo</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Ingeniería de datos</p></div>
+            <div class="area"><div class="ai">📈</div><p>Visualización y BI</p></div>
+            <div class="area"><div class="ai">⚙️</div><p>ML Ops</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Estadística aplicada</p></div>
+            <div class="area"><div class="ai">🔗</div><p>Integración de datos</p></div>
+            <div class="area"><div class="ai">🗄️</div><p>Data Warehousing</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Experimentación y A/B</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">AN</div><div class="text"><strong>Ana — Data Scientist</strong><br>Desarrolla modelos de predicción para optimizar campañas y procesos.</div></div>
+            <div class="exp"><div class="avatar">RA</div><div class="text"><strong>Raúl — Ingeniero de Datos</strong><br>Diseña pipelines escalables y asegura calidad en ingesta de datos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4 Ciberseguridad -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">🛡️</div>
+          <div>
+            <h3>Ciberseguridad</h3>
+            <p class="card-desc">Protección de activos digitales, detección de amenazas y respuesta a incidentes.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Nivel: Técnico/Profesional</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('cs')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Ciberseguridad')">Más información</button>
+          </div>
+        </div>
+
+        <div id="cs" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🔐</div><p>Testing / Pentesting</p></div>
+            <div class="area"><div class="ai">🛰️</div><p>Seguridad en la nube</p></div>
+            <div class="area"><div class="ai">🛠️</div><p>Respuesta a incidentes</p></div>
+            <div class="area"><div class="ai">📜</div><p>Governance & Compliance</p></div>
+            <div class="area"><div class="ai">🔎</div><p>SIEM & Monitoreo</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Hardening de sistemas</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Auditoría</p></div>
+            <div class="area"><div class="ai">🧩</div><p>Concientización y formación</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">SO</div><div class="text"><strong>Sofía — Analista SOC</strong><br>Supervisa alertas y coordina triage en casos de intrusión.</div></div>
+            <div class="exp"><div class="avatar">CR</div><div class="text"><strong>Carlos — Pentester</strong><br>Realiza pruebas de intrusión y reportes de riesgo para proteger activos claves.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5 Telecomunicaciones -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">📡</div>
+          <div>
+            <h3>Ingeniería en Telecomunicaciones</h3>
+            <p class="card-desc">Diseño y operación de redes de comunicaciones y transmisión de datos.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Aplicable a: operadores, ISP, empresas</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('tel')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Ingeniería en Telecomunicaciones')">Más información</button>
+          </div>
+        </div>
+
+        <div id="tel" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">📶</div><p>Diseño de redes inalámbricas</p></div>
+            <div class="area"><div class="ai">🔌</div><p>Transmisión y fibra óptica</p></div>
+            <div class="area"><div class="ai">🛰️</div><p>Satélites y comunicación larga distancia</p></div>
+            <div class="area"><div class="ai">🖧</div><p>Provisión de servicios ISP</p></div>
+            <div class="area"><div class="ai">⚙️</div><p>Mantenimiento y monitoreo</p></div>
+            <div class="area"><div class="ai">🔒</div><p>Seguridad en telecoms</p></div>
+            <div class="area"><div class="ai">📡</div><p>IoT y conectividad masiva</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Planificación de capacidad</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">AL</div><div class="text"><strong>Alejandro — Ingeniero de Redes</strong><br>Gestiona redes backbone y optimiza latencia para servicios críticos.</div></div>
+            <div class="exp"><div class="avatar">VT</div><div class="text"><strong>Vanessa — Especialista en Fibra</strong><br>Coordina despliegues y mantiene la integridad de enlaces de alta capacidad.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6 Desarrollo Web -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">🌐</div>
+          <div>
+            <h3>Desarrollo Web</h3>
+            <p class="card-desc">Creación de sitios y aplicaciones web responsivas y accesibles.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Stack: Frontend / Backend / Fullstack</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('web')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Desarrollo Web')">Más información</button>
+          </div>
+        </div>
+
+        <div id="web" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🎨</div><p>Frontend y experiencia de usuario</p></div>
+            <div class="area"><div class="ai">⚙️</div><p>Backend y APIs</p></div>
+            <div class="area"><div class="ai">🧩</div><p>Integración y microservicios</p></div>
+            <div class="area"><div class="ai">📱</div><p>Web móvil y PWA</p></div>
+            <div class="area"><div class="ai">🔁</div><p>CI/CD y despliegues</p></div>
+            <div class="area"><div class="ai">🔒</div><p>Seguridad web</p></div>
+            <div class="area"><div class="ai">📈</div><p>Performance y optimización</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Testing end-to-end</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">CL</div><div class="text"><strong>Clara — Frontend Engineer</strong><br>Implementa UI accesible y optimiza tiempos de carga para dispositivos móviles.</div></div>
+            <div class="exp"><div class="avatar">MA</div><div class="text"><strong>Marco — Fullstack</strong><br>Conecta servicios backend con arquitecturas serverless para alta disponibilidad.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 7 IA -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">🤖</div>
+          <div>
+            <h3>Inteligencia Artificial</h3>
+            <p class="card-desc">Modelos, procesamiento y soluciones con aprendizaje automático.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Enfoque: NLP, visión por computador, modelos generativos</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('ia')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Inteligencia Artificial')">Más información</button>
+          </div>
+        </div>
+
+        <div id="ia" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧠</div><p>Modelado ML</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Investigación aplicada</p></div>
+            <div class="area"><div class="ai">🛰️</div><p>Visión por computador</p></div>
+            <div class="area"><div class="ai">✍️</div><p>Procesamiento de lenguaje (NLP)</p></div>
+            <div class="area"><div class="ai">⚙️</div><p>Implementación y despliegue de modelos</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Optimización y MLOps</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Ética y gobernanza en IA</p></div>
+            <div class="area"><div class="ai">📈</div><p>Análisis de resultados</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">SV</div><div class="text"><strong>Santiago — ML Engineer</strong><br>Entrena pipelines de ML y mantiene modelos en producción.</div></div>
+            <div class="exp"><div class="avatar">LI</div><div class="text"><strong>Laura — Researcher</strong><br>Trabaja en modelos de NLP aplicados al análisis semántico de texto.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 8 Cloud -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">☁️</div>
+          <div>
+            <h3>Computación en la Nube</h3>
+            <p class="card-desc">Plataformas, arquitectura y operación en proveedores cloud.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">AWS / Azure / GCP · Arquitectura escalable</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('cloud')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Computación en la Nube')">Más información</button>
+          </div>
+        </div>
+
+        <div id="cloud" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🛠️</div><p>Arquitectura Cloud</p></div>
+            <div class="area"><div class="ai">🔁</div><p>DevOps y automatización</p></div>
+            <div class="area"><div class="ai">🧱</div><p>Contenedores y orquestación</p></div>
+            <div class="area"><div class="ai">🔐</div><p>Seguridad Cloud</p></div>
+            <div class="area"><div class="ai">📦</div><p>Servicios gestionados</p></div>
+            <div class="area"><div class="ai">📈</div><p>Observabilidad y monitoreo</p></div>
+            <div class="area"><div class="ai">🗄️</div><p>Cost Management</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Testing en entornos cloud</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">PR</div><div class="text"><strong>Paula — Cloud Architect</strong><br>Diseña infra escalable que reduce costos y mejora resiliencia.</div></div>
+            <div class="exp"><div class="avatar">EN</div><div class="text"><strong>Enzo — DevOps</strong><br>Automatiza despliegues y mantiene pipelines de CI/CD robustos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 9 Ingeniería Electrónica -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">🔌</div>
+          <div>
+            <h3>Ingeniería Electrónica</h3>
+            <p class="card-desc">Diseño de sistemas embebidos, control y hardware aplicado.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">IoT · Sistemas Embebidos</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('elec')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Ingeniería Electrónica')">Más información</button>
+          </div>
+        </div>
+
+        <div id="elec" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🔋</div><p>Sistemas embebidos</p></div>
+            <div class="area"><div class="ai">🧩</div><p>Diseño de PCB</p></div>
+            <div class="area"><div class="ai">⚙️</div><p>Control y automatización</p></div>
+            <div class="area"><div class="ai">📡</div><p>Telemetría</p></div>
+            <div class="area"><div class="ai">🤖</div><p>Robótica</p></div>
+            <div class="area"><div class="ai">🔧</div><p>Prototipado</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Mantenimiento industrial</p></div>
+            <div class="area"><div class="ai">📈</div><p>Optimización de hardware</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">RO</div><div class="text"><strong>Rocío — Ingeniera</strong><br>Desarrolla sistemas embebidos para dispositivos IoT comerciales.</div></div>
+            <div class="exp"><div class="avatar">LU</div><div class="text"><strong>Luis — Técnico</strong><br>Encargado de pruebas y certificaciones de hardware.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 10 Análisis y Desarrollo de Sistemas -->
+      <article class="card tecnologia">
+        <div class="card-head">
+          <div class="icon">🔎</div>
+          <div>
+            <h3>Análisis y Desarrollo de Sistemas</h3>
+            <p class="card-desc">Enfoque en ciclo de vida de software, metodologías y mejora continua.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Gestión de proyectos y mejora</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('ads')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Análisis y Desarrollo de Sistemas')">Más información</button>
+          </div>
+        </div>
+
+        <div id="ads" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🗂️</div><p>Análisis de Requisitos</p></div>
+            <div class="area"><div class="ai">📐</div><p>Modelado y diseño</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Gestión de proyectos</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Implementación ágil</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Optimización de procesos</p></div>
+            <div class="area"><div class="ai">📈</div><p>KPIs y mejora continua</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Pruebas funcionales</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Relación con cliente</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">AN</div><div class="text"><strong>Andrea — Analista</strong><br>Coordina requerimientos y entrega valor incremental mediante sprints.</div></div>
+            <div class="exp"><div class="avatar">OS</div><div class="text"><strong>Oscar — PM</strong><br>Lidera equipos multidisciplinarios y gestiona el roadmap del producto.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===================== SALUD (9) ===================== -->
+      <!-- Medicina -->
+      <article class="card salud">
+        <div class="card-head">
+          <div class="icon">🩺</div>
+          <div>
+            <h3>Medicina</h3>
+            <p class="card-desc">Formación clínica para diagnóstico, prevención y tratamiento integral.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Hospitalaria · Investigación · Salud pública</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('medicina-full')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Medicina')">Más información</button>
+          </div>
+        </div>
+
+        <div id="medicina-full" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🏥</div><p>Médico General</p></div>
+            <div class="area"><div class="ai">👶</div><p>Pediatría</p></div>
+            <div class="area"><div class="ai">🩺</div><p>Medicina Interna</p></div>
+            <div class="area"><div class="ai">⚕️</div><p>Urgencias y traumatología</p></div>
+            <div class="area"><div class="ai">🔬</div><p>Investigación clínica</p></div>
+            <div class="area"><div class="ai">📊</div><p>Salud pública</p></div>
+            <div class="area"><div class="ai">🩻</div><p>Diagnóstico por imágenes</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Gestión hospitalaria</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">DV</div><div class="text"><strong>Deivy — Pediatra</strong><br>Acompaña familias en procesos críticos y aplica protocolos de emergencia pediátrica.</div></div>
+            <div class="exp"><div class="avatar">IS</div><div class="text"><strong>Isabel — Médico General</strong><br>Coordina atención primaria y referencia a especialistas en red de salud.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Enfermería -->
+      <article class="card salud">
+        <div class="card-head">
+          <div class="icon">🩹</div>
+          <div>
+            <h3>Enfermería</h3>
+            <p class="card-desc">Atención directa al paciente, cuidado clínico y apoyo en equipos de salud.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Clave en atención hospitalaria y comunitaria</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('enf')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Enfermería')">Más información</button>
+          </div>
+        </div>
+
+        <div id="enf" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🩺</div><p>Cuidados críticos</p></div>
+            <div class="area"><div class="ai">🏥</div><p>Hospitalización</p></div>
+            <div class="area"><div class="ai">🏡</div><p>Atención domiciliaria</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Documentación clínica</p></div>
+            <div class="area"><div class="ai">👥</div><p>Educación al paciente</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Toma de muestras y labor asistencial</p></div>
+            <div class="area"><div class="ai">⚕️</div><p>Gestión de riesgos</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Coordinación de cuidados</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">EN</div><div class="text"><strong>Enrique — Enfermero jefe</strong><br>Supervisa turnos, aplica protocolos y lidera equipos de enfermería en urgencias.</div></div>
+            <div class="exp"><div class="avatar">MC</div><div class="text"><strong>Marta — Enfermera comunitaria</strong><br>Trabaja en programas de prevención y seguimiento domiciliario.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Psicología -->
+      <article class="card salud">
+        <div class="card-head">
+          <div class="icon">🧠</div>
+          <div>
+            <h3>Psicología</h3>
+            <p class="card-desc">Evaluación, intervención y acompañamiento emocional en distintos contextos.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Clínica · Educativa · Organizacional</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('psic')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Psicología')">Más información</button>
+          </div>
+        </div>
+
+        <div id="psic" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🩺</div><p>Psicología clínica</p></div>
+            <div class="area"><div class="ai">🏫</div><p>Psicología educativa</p></div>
+            <div class="area"><div class="ai">🏢</div><p>Organizacional</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Evaluaciones psicológicas</p></div>
+            <div class="area"><div class="ai">🛟</div><p>Acompañamiento emocional</p></div>
+            <div class="area"><div class="ai">📈</div><p>Programas preventivos</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Investigación en salud mental</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Terapias individuales y grupales</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">PS</div><div class="text"><strong>Paola — Psicóloga clínica</strong><br>Atiende pacientes con ansiedad y diseña planes de intervención personalizados.</div></div>
+            <div class="exp"><div class="avatar">RG</div><div class="text"><strong>Raquel — Psicóloga escolar</strong><br>Apoya procesos de inclusión y bienestar en entornos educativos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Fisioterapia -->
+      <article class="card salud">
+        <div class="card-head">
+          <div class="icon">🏃</div>
+          <div>
+            <h3>Fisioterapia</h3>
+            <p class="card-desc">Rehabilitación, recuperación funcional y prevención de lesiones.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Clínica privada · rehabilitación · deporte</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('fisio')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Fisioterapia')">Más información</button>
+          </div>
+        </div>
+
+        <div id="fisio" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🩺</div><p>Rehabilitación física</p></div>
+            <div class="area"><div class="ai">🏥</div><p>Fisioterapia deportiva</p></div>
+            <div class="area"><div class="ai">🧑‍🦽</div><p>Terapia neurológica</p></div>
+            <div class="area"><div class="ai">🧰</div><p>Electroterapia</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Planificación de ejercicios</p></div>
+            <div class="area"><div class="ai">📋</div><p>Valoración funcional</p></div>
+            <div class="area"><div class="ai">🏋️</div><p>Prevención de lesiones</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Trabajo interdisciplinario</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">FR</div><div class="text"><strong>Fernando — Fisioterapeuta</strong><br>Diseña planes de rehabilitación post-operatoria con enfoque funcional.</div></div>
+            <div class="exp"><div class="avatar">NO</div><div class="text"><strong>Noemí — Terapeuta deportiva</strong><br>Trabaja con atletas en prevención y recuperación de lesiones.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Odontología -->
+      <article class="card salud">
+        <div class="card-head">
+          <div class="icon">🦷</div>
+          <div>
+            <h3>Odontología</h3>
+            <p class="card-desc">Prevención y tratamiento de la salud bucal, estética y rehabilitación.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Clínica · salud pública · estética</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('odonto')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Odontología')">Más información</button>
+          </div>
+        </div>
+
+        <div id="odonto" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🪥</div><p>Endodoncia</p></div>
+            <div class="area"><div class="ai">🦷</div><p>Ortodoncia</p></div>
+            <div class="area"><div class="ai">🛠️</div><p>Rehabilitación oral</p></div>
+            <div class="area"><div class="ai">🧼</div><p>Prevención y educación</p></div>
+            <div class="area"><div class="ai">🏥</div><p>Cirugía bucal</p></div>
+            <div class="area"><div class="ai">🩺</div><p>Atención comunitaria</p></div>
+            <div class="area"><div class="ai">🎨</div><p>Estética dental</p></div>
+            <div class="area"><div class="ai">🔬</div><p>Investigación clínica</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">LD</div><div class="text"><strong>Laura — Odontóloga</strong><br>Dirige programas de salud bucal en instituciones educativas.</div></div>
+            <div class="exp"><div class="avatar">PR</div><div class="text"><strong>Pedro — Cirujano Bucal</strong><br>Realiza procedimientos complejos y coordina equipos clínicos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Nutrición -->
+      <article class="card salud">
+        <div class="card-head">
+          <div class="icon">🥗</div>
+          <div>
+            <h3>Nutrición y Dietética</h3>
+            <p class="card-desc">Prevención, planificación y optimización nutricional para salud y deporte.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Clínica · deportiva · comunitaria</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('nut')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Nutrición y Dietética')">Más información</button>
+          </div>
+        </div>
+
+        <div id="nut" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">📋</div><p>Consultas nutricionales</p></div>
+            <div class="area"><div class="ai">🏃</div><p>Nutrición deportiva</p></div>
+            <div class="area"><div class="ai">👶</div><p>Nutrición pediátrica</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Evaluación clínica</p></div>
+            <div class="area"><div class="ai">📊</div><p>Programas poblacionales</p></div>
+            <div class="area"><div class="ai">🥼</div><p>Educación nutricional</p></div>
+            <div class="area"><div class="ai">🔬</div><p>Investigación alimentaria</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Planificación de menús</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">NL</div><div class="text"><strong>Natalia — Nutricionista</strong><br>Diseña planes para pacientes crónicos y atletas de alto rendimiento.</div></div>
+            <div class="exp"><div class="avatar">GG</div><div class="text"><strong>Gabriela — Coordinadora de salud</strong><br>Implementa programas comunitarios de prevención nutricional.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tecnología en Radiología -->
+      <article class="card salud">
+        <div class="card-head">
+          <div class="icon">🩻</div>
+          <div>
+            <h3>Tecnología en Radiología</h3>
+            <p class="card-desc">Operación y procesamiento de imágenes médicas para diagnóstico.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Técnico · Laboratorio · Hospital</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('rad')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Tecnología en Radiología')">Más información</button>
+          </div>
+        </div>
+
+        <div id="rad" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🖼️</div><p>Rayos X y diagnóstico</p></div>
+            <div class="area"><div class="ai">🔬</div><p>Procesamiento de imágenes</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Mantenimiento de equipos</p></div>
+            <div class="area"><div class="ai">📋</div><p>Control de calidad</p></div>
+            <div class="area"><div class="ai">🧑‍⚕️</div><p>Asistencia clínica</p></div>
+            <div class="area"><div class="ai">🔒</div><p>Seguridad radiológica</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Gestión de flujos de trabajo</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Archivado y PACS</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">CR</div><div class="text"><strong>Carlos — Tecnólogo</strong><br>Opera equipos de alta resolución y colabora en diagnósticos con especialistas.</div></div>
+            <div class="exp"><div class="avatar">LM</div><div class="text"><strong>Laura — Técnico en imágenes</strong><br>Garantiza calidad y seguridad en procedimientos radiológicos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Terapia Ocupacional -->
+      <article class="card salud">
+        <div class="card-head">
+          <div class="icon">🧩</div>
+          <div>
+            <h3>Terapia Ocupacional</h3>
+            <p class="card-desc">Promoción de la autonomía y adaptación funcional en distintos contextos.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Clínica · comunitaria · educativa</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('to')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Terapia Ocupacional')">Más información</button>
+          </div>
+        </div>
+
+        <div id="to" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧠</div><p>Rehabilitación cognitiva</p></div>
+            <div class="area"><div class="ai">🛠️</div><p>Adaptación del entorno</p></div>
+            <div class="area"><div class="ai">🏥</div><p>Intervención clínica</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Inclusión social</p></div>
+            <div class="area"><div class="ai">👥</div><p>Trabajo con familias</p></div>
+            <div class="area"><div class="ai">📋</div><p>Valoración funcional</p></div>
+            <div class="area"><div class="ai">🎯</div><p>Programas de intervención</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Seguimiento y evaluación</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">BE</div><div class="text"><strong>Belen — Terapeuta</strong><br>Diseña estrategias para mejorar la independencia de pacientes con discapacidad.</div></div>
+            <div class="exp"><div class="avatar">OM</div><div class="text"><strong>Oscar — Coordinador</strong><br>Implementa programas ocupacionales en centros de rehabilitación.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Laboratorio Clínico -->
+      <article class="card salud">
+        <div class="card-head">
+          <div class="icon">🔬</div>
+          <div>
+            <h3>Laboratorio Clínico</h3>
+            <p class="card-desc">Análisis, procesamiento y aseguramiento de resultados de laboratorio.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Hospitalario · diagnóstico</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('lab')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Laboratorio Clínico')">Más información</button>
+          </div>
+        </div>
+
+        <div id="lab" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧪</div><p>Hematología</p></div>
+            <div class="area"><div class="ai">🧫</div><p>Microbiología</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Bioquímica</p></div>
+            <div class="area"><div class="ai">🔬</div><p>Control de calidad</p></div>
+            <div class="area"><div class="ai">📊</div><p>Validación de resultados</p></div>
+            <div class="area"><div class="ai">🛰️</div><p>Mantenimiento de equipos</p></div>
+            <div class="area"><div class="ai">🔒</div><p>Gestión de muestras</p></div>
+            <div class="area"><div class="ai">📈</div><p>Informes clínicos</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">SR</div><div class="text"><strong>Sara — Bioanalista</strong><br>Supervisa técnicas y asegura calidad en procesos de laboratorio clínico.</div></div>
+            <div class="exp"><div class="avatar">AL</div><div class="text"><strong>Alberto — Técnico</strong><br>Realiza pruebas diagnósticas y mantiene equipos de laboratorio.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===================== DERECHO (7) ===================== -->
+      <!-- Derecho Penal -->
+      <article class="card derecho">
+        <div class="card-head">
+          <div class="icon">⚖️</div>
+          <div>
+            <h3>Derecho Penal</h3>
+            <p class="card-desc">Formación para ejercer defensa, acusación y práctica en justicia penal.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Litigio · Práctica forense</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('dp')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Derecho Penal')">Más información</button>
+          </div>
+        </div>
+
+        <div id="dp" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧾</div><p>Litigio penal</p></div>
+            <div class="area"><div class="ai">🕵️</div><p>Investigación criminal</p></div>
+            <div class="area"><div class="ai">🏛️</div><p>Defensa y representación</p></div>
+            <div class="area"><div class="ai">📜</div><p>Procedimientos judiciales</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Peritajes y pruebas</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Asesoría a víctimas</p></div>
+            <div class="area"><div class="ai">⚖️</div><p>Medidas de protección</p></div>
+            <div class="area"><div class="ai">📊</div><p>Análisis de casos</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">AG</div><div class="text"><strong>Ana — Abogada penalista</strong><br>Participa en audiencias y coordina estrategias de defensa en casos complejos.</div></div>
+            <div class="exp"><div class="avatar">RC</div><div class="text"><strong>Rafael — Fiscal</strong><br>Elabora acusaciones y colabora con equipos investigativos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Derecho Civil -->
+      <article class="card derecho">
+        <div class="card-head">
+          <div class="icon">📜</div>
+          <div>
+            <h3>Derecho Civil</h3>
+            <p class="card-desc">Contratos, familia, sucesiones y resolución de conflictos civiles.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Asesoría privada · consultoría</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('dc')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Derecho Civil')">Más información</button>
+          </div>
+        </div>
+
+        <div id="dc" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">✍️</div><p>Contratos y obligaciones</p></div>
+            <div class="area"><div class="ai">🏠</div><p>Derecho de familia</p></div>
+            <div class="area"><div class="ai">📚</div><p>Sucesiones</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Mediación</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Asesoría registral</p></div>
+            <div class="area"><div class="ai">⚖️</div><p>Procesos civiles</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Due diligence</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Conciliación</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">LM</div><div class="text"><strong>Luisa — Abogada civil</strong><br>Asesora familias en procesos de sucesión y contratos.</div></div>
+            <div class="exp"><div class="avatar">TG</div><div class="text"><strong>Tomás — Mediador</strong><br>Facilita acuerdos y mejora soluciones extrajudiciales.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Derecho Laboral -->
+      <article class="card derecho">
+        <div class="card-head">
+          <div class="icon">💼</div>
+          <div>
+            <h3>Derecho Laboral</h3>
+            <p class="card-desc">Relaciones laborales, negociación colectiva y asesoría a empresas y trabajadores.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Consultoría · compliance laboral</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('dl')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Derecho Laboral')">Más información</button>
+          </div>
+        </div>
+
+        <div id="dl" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">📋</div><p>Contratación laboral</p></div>
+            <div class="area"><div class="ai">⚖️</div><p>Litigio laboral</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Negociación colectiva</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Auditoría y cumplimiento</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Seguridad social</p></div>
+            <div class="area"><div class="ai">🏢</div><p>Asesoría empresarial</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Reestructuración laboral</p></div>
+            <div class="area"><div class="ai">📈</div><p>Prevención de riesgos legales</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">PA</div><div class="text"><strong>Paola — Abogada laboral</strong><br>Asesora procesos disciplinarios y negociación de convenios colectivos.</div></div>
+            <div class="exp"><div class="avatar">JM</div><div class="text"><strong>Juan — Consultor RRHH</strong><br>Integra soluciones legales con estrategias de recursos humanos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Derecho Constitucional -->
+      <article class="card derecho">
+        <div class="card-head">
+          <div class="icon">🧭</div>
+          <div>
+            <h3>Derecho Constitucional</h3>
+            <p class="card-desc">Estudio de la estructura del Estado, derechos y garantías constitucionales.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Investigación · asesoría pública</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('cons')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Derecho Constitucional')">Más información</button>
+          </div>
+        </div>
+
+        <div id="cons" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🏛️</div><p>Asesoría pública</p></div>
+            <div class="area"><div class="ai">📚</div><p>Investigación jurídica</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Protección de derechos</p></div>
+            <div class="area"><div class="ai">⚖️</div><p>Litigio constitucional</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Consultoría en políticas públicas</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Análisis de normas</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Representación legal</p></div>
+            <div class="area"><div class="ai">📈</div><p>Educación cívica</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">EC</div><div class="text"><strong>Esteban — Docente</strong><br>Investiga y publica sobre derechos fundamentales y su aplicación práctica.</div></div>
+            <div class="exp"><div class="avatar">LL</div><div class="text"><strong>Laura — Asesora pública</strong><br>Trabaja con entidades gubernamentales en políticas de cumplimiento constitucional.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Derecho Comercial -->
+      <article class="card derecho">
+        <div class="card-head">
+          <div class="icon">🏢</div>
+          <div>
+            <h3>Derecho Comercial</h3>
+            <p class="card-desc">Contratos, sociedades, fusiones y asesoría legal empresarial.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Asesoría corporativa y comercio</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('dccom')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Derecho Comercial')">Más información</button>
+          </div>
+        </div>
+
+        <div id="dccom" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">📄</div><p>Contratos comerciales</p></div>
+            <div class="area"><div class="ai">🏛️</div><p>Cumplimiento corporativo</p></div>
+            <div class="area"><div class="ai">📊</div><p>Fusiones y adquisiciones</p></div>
+            <div class="area"><div class="ai">💼</div><p>Propiedad intelectual</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Asesoría tributaria</p></div>
+            <div class="area"><div class="ai">🔗</div><p>Contratación internacional</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Gobierno corporativo</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Due diligence</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">VB</div><div class="text"><strong>Valeria — Abogada corporativa</strong><br>Asesora procesos de M&A y contratos comerciales complejos.</div></div>
+            <div class="exp"><div class="avatar">CM</div><div class="text"><strong>César — Consultor legal</strong><br>Apoya empresas en cumplimiento y optimización contractual.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Derecho Internacional -->
+      <article class="card derecho">
+        <div class="card-head">
+          <div class="icon">🌍</div>
+          <div>
+            <h3>Derecho Internacional</h3>
+            <p class="card-desc">Regulación entre Estados, comercio internacional y derechos humanos.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Organizaciones · consultoría</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('di')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Derecho Internacional')">Más información</button>
+          </div>
+        </div>
+
+        <div id="di" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🤝</div><p>Comercio internacional</p></div>
+            <div class="area"><div class="ai">🏛️</div><p>Derechos humanos</p></div>
+            <div class="area"><div class="ai">📜</div><p>Tratados y convenios</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Arbitraje internacional</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Análisis de jurisdicciones</p></div>
+            <div class="area"><div class="ai">📈</div><p>Asesoría estatal</p></div>
+            <div class="area"><div class="ai">🔗</div><p>Cooperación internacional</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Investigación jurídica</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">AR</div><div class="text"><strong>Ana — Abogada internacional</strong><br>Representa casos en foros y apoya negociación de tratados.</div></div>
+            <div class="exp"><div class="avatar">PM</div><div class="text"><strong>Pamela — Investigadora</strong><br>Colabora con ONGs en defensa de derechos humanos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Criminología -->
+      <article class="card derecho">
+        <div class="card-head">
+          <div class="icon">🔍</div>
+          <div>
+            <h3>Criminología</h3>
+            <p class="card-desc">Análisis de conductas criminales, prevención y estudios forenses.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Peritaje · investigación · prevención</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('crim')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Criminología')">Más información</button>
+          </div>
+        </div>
+
+        <div id="crim" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧠</div><p>Análisis delictual</p></div>
+            <div class="area"><div class="ai">🔬</div><p>Peritaje forense</p></div>
+            <div class="area"><div class="ai">📊</div><p>Prevención del delito</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Política criminal</p></div>
+            <div class="area"><div class="ai">🕵️</div><p>Investigación criminal</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Intervención social</p></div>
+            <div class="area"><div class="ai">📚</div><p>Docencia e investigación</p></div>
+            <div class="area"><div class="ai">🔍</div><p>Análisis estadístico del delito</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">NR</div><div class="text"><strong>Nora — Criminóloga</strong><br>Realiza perfiles y análisis para programas de prevención.</div></div>
+            <div class="exp"><div class="avatar">FB</div><div class="text"><strong>Fabio — Perito</strong><br>Apoya investigaciones forenses con análisis técnico.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===================== EDUCACIÓN (8) ===================== -->
+      <!-- Pedagogía -->
+      <article class="card educacion">
+        <div class="card-head">
+          <div class="icon">📚</div>
+          <div>
+            <h3>Pedagogía</h3>
+            <p class="card-desc">Teoría y práctica educativa para el diseño didáctico y la enseñanza.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Docencia · formación · innovación</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('ped')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Pedagogía')">Más información</button>
+          </div>
+        </div>
+
+        <div id="ped" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🎯</div><p>Diseño curricular</p></div>
+            <div class="area"><div class="ai">🧩</div><p>Metodologías activas</p></div>
+            <div class="area"><div class="ai">🧑‍🏫</div><p>Docencia en aula</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Evaluación educativa</p></div>
+            <div class="area"><div class="ai">📚</div><p>Investigación pedagógica</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Vinculación con comunidad</p></div>
+            <div class="area"><div class="ai">🧸</div><p>Educación inclusiva</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Formación continua</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">SO</div><div class="text"><strong>Sonia — Docente</strong><br>Implementa metodologías lúdicas que mejoran la participación y el aprendizaje.</div></div>
+            <div class="exp"><div class="avatar">PM</div><div class="text"><strong>Pablo — Coordinador pedagógico</strong><br>Diseña proyectos educativos y evalúa resultados institucionales.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Educación Infantil -->
+      <article class="card educacion">
+        <div class="card-head">
+          <div class="icon">🧸</div>
+          <div>
+            <h3>Educación Infantil</h3>
+            <p class="card-desc">Acompañamiento integral del desarrollo en la primera infancia.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Jardines · programas ICBF</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('inf')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Educación Infantil')">Más información</button>
+          </div>
+        </div>
+
+        <div id="inf" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧸</div><p>Estimulación temprana</p></div>
+            <div class="area"><div class="ai">🎨</div><p>Pedagogía lúdica</p></div>
+            <div class="area"><div class="ai">👥</div><p>Acompañamiento emocional</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Relación familia-escuela</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Evaluación del desarrollo</p></div>
+            <div class="area"><div class="ai">📚</div><p>Proyectos temáticos</p></div>
+            <div class="area"><div class="ai">🛡️</div><p>Seguridad y cuidado</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Trabajo interdisciplinario</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">CR</div><div class="text"><strong>Carla — Educadora</strong><br>Desarrolla proyectos sensoriales que fortalecen habilidades motoras y sociales.</div></div>
+            <div class="exp"><div class="avatar">LU</div><div class="text"><strong>Lucía — Coordinadora ICBF</strong><br>Implementa programas de apoyo familiar y seguimiento del desarrollo infantil.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Lic. en Matemáticas -->
+      <article class="card educacion">
+        <div class="card-head">
+          <div class="icon">➗</div>
+          <div>
+            <h3>Licenciatura en Matemáticas</h3>
+            <p class="card-desc">Formación para docencia, investigación y aplicaciones analíticas.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Docencia · análisis · matemáticas aplicadas</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('mat')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Licenciatura en Matemáticas')">Más información</button>
+          </div>
+        </div>
+
+        <div id="mat" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">📐</div><p>Docencia secundaria y superior</p></div>
+            <div class="area"><div class="ai">🔢</div><p>Modelado matemático</p></div>
+            <div class="area"><div class="ai">📊</div><p>Investigación y estadística</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Desarrollo curricular</p></div>
+            <div class="area"><div class="ai">🧠</div><p>Formación en pensamiento lógico</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Aplicaciones en finanzas y tecnología</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Tutorías y mentoring</p></div>
+            <div class="area"><div class="ai">📈</div><p>Consultoría analítica</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">EM</div><div class="text"><strong>Eduardo — Profesor</strong><br>Integra recursos digitales para mejorar comprensión y resolución de problemas.</div></div>
+            <div class="exp"><div class="avatar">FA</div><div class="text"><strong>Flor — Investigadora</strong><br>Aplica modelos matemáticos en proyectos multidisciplinarios.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Educación Física -->
+      <article class="card educacion">
+        <div class="card-head">
+          <div class="icon">🏅</div>
+          <div>
+            <h3>Educación Física</h3>
+            <p class="card-desc">Formación deportiv a y promoción de actividad física para la salud.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Deporte · recreación · salud</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('ef')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Educación Física')">Más información</button>
+          </div>
+        </div>
+
+        <div id="ef" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🏃</div><p>Entrenamiento deportivo</p></div>
+            <div class="area"><div class="ai">🧘</div><p>Condición física y salud</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Programas recreativos</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Gestión deportiva</p></div>
+            <div class="area"><div class="ai">🛡️</div><p>Prevención de lesiones</p></div>
+            <div class="area"><div class="ai">📊</div><p>Análisis de rendimiento</p></div>
+            <div class="area"><div class="ai">🎯</div><p>Entrenamiento personalizado</p></div>
+            <div class="area"><div class="ai">🤸</div><p>Actividad comunitaria</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">RG</div><div class="text"><strong>Roberto — Entrenador</strong><br>Dirige programas de alto rendimiento y rehabilitación deportiva.</div></div>
+            <div class="exp"><div class="avatar">MM</div><div class="text"><strong>María — Profesora</strong><br>Impulsa hábitos saludables en escuelas mediante actividad física planificada.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Educación Especial -->
+      <article class="card educacion">
+        <div class="card-head">
+          <div class="icon">♿</div>
+          <div>
+            <h3>Educación Especial</h3>
+            <p class="card-desc">Atención educativa para estudiantes con necesidades especiales y apoyo inclusivo.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Inclusión · terapias · apoyo escolar</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('ee')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Educación Especial')">Más información</button>
+          </div>
+        </div>
+
+        <div id="ee" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧩</div><p>Diseño de adaptaciones</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Intervención temprana</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Inclusión escolar</p></div>
+            <div class="area"><div class="ai">🧑‍⚕️</div><p>Terapias complementarias</p></div>
+            <div class="area"><div class="ai">📋</div><p>Evaluación psicoeducativa</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Seguimiento individual</p></div>
+            <div class="area"><div class="ai">👥</div><p>Trabajo con familias</p></div>
+            <div class="area"><div class="ai">📚</div><p>Formación docente</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">IS</div><div class="text"><strong>Imelda — Especialista</strong><br>Implementa adaptaciones curriculares para inclusión efectiva.</div></div>
+            <div class="exp"><div class="avatar">PA</div><div class="text"><strong>Pablo — Terapeuta</strong><br>Coordina terapias y acompaña familias en procesos educativos.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Lic. en Biología -->
+      <article class="card educacion">
+        <div class="card-head">
+          <div class="icon">🔬</div>
+          <div>
+            <h3>Licenciatura en Biología</h3>
+            <p class="card-desc">Docencia, investigación y divulgación científica en ciencias biológicas.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Laboratorio · docencia · investigación</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('bio')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Licenciatura en Biología')">Más información</button>
+          </div>
+        </div>
+
+        <div id="bio" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🧬</div><p>Docencia en ciencias</p></div>
+            <div class="area"><div class="ai">🔬</div><p>Investigación básica y aplicada</p></div>
+            <div class="area"><div class="ai">🌱</div><p>Ecología y conservación</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Divulgación científica</p></div>
+            <div class="area"><div class="ai">🧪</div><p>Laboratorio y experimentación</p></div>
+            <div class="area"><div class="ai">📈</div><p>Monitorización ambiental</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Consultoría ambiental</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Proyectos de conservación</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">VE</div><div class="text"><strong>Valeria — Investigadora</strong><br>Coordina proyectos de campo sobre biodiversidad y conservación.</div></div>
+            <div class="exp"><div class="avatar">MJ</div><div class="text"><strong>Marcos — Docente</strong><br>Imparte clases prácticas y fomenta pensamiento científico en estudiantes.</div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Orientación Escolar -->
+      <article class="card educacion">
+        <div class="card-head">
+          <div class="icon">🧭</div>
+          <div>
+            <h3>Orientación Escolar</h3>
+            <p class="card-desc">Acompañamiento a estudiantes en su proceso académico y vocacional.</p>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <div style="font-size:13px;color:#64748b">Consejería · orientación vocacional</div>
+          <div>
+            <button class="btn-ghost" onclick="mostrar('ori')">Ver detalles</button>
+            <button class="btn-primary" onclick="masInfo('Orientación Escolar')">Más información</button>
+          </div>
+        </div>
+
+        <div id="ori" class="details">
+          <h4>Áreas de desempeño</h4>
+          <div class="areas">
+            <div class="area"><div class="ai">🗂️</div><p>Consejería educativa</p></div>
+            <div class="area"><div class="ai">🎯</div><p>Orientación vocacional</p></div>
+            <div class="area"><div class="ai">📋</div><p>Evaluación psicopedagógica</p></div>
+            <div class="area"><div class="ai">🤝</div><p>Intervención socioemocional</p></div>
+            <div class="area"><div class="ai">🧭</div><p>Planificación académica</p></div>
+            <div class="area"><div class="ai">🔁</div><p>Articulación familia-escuela</p></div>
+            <div class="area"><div class="ai">📚</div><p>Programas preventivos</p></div>
+            <div class="area"><div class="ai">🧾</div><p>Derivación a servicios</p></div>
+          </div>
+
+          <h4 style="margin-top:12px">Experiencias reales</h4>
+          <div class="exp-list">
+            <div class="exp"><div class="avatar">SR</div><div class="text"><strong>Sandra — Orientadora</strong><br>Acompaña a estudiantes en decisiones académicas y el desarrollo socioemocional.</div></div>
+            <div class="exp"><div class="avatar">JM</div><div class="text"><strong>Javier — Consejero</strong><br>Implementa programas de prevención y apoyo en instituciones educativas.</div></div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </main>
 
   <script>
-    const menuBtn = document.getElementById("menu-btn");
-    const menuPanel = document.getElementById("menu-panel");
+    // Toggle details
+    function mostrar(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.classList.toggle('show');
+      // scroll into view if opened (mobile friendly)
+      if(el.classList.contains('show')){
+        setTimeout(()=> el.scrollIntoView({behavior:'smooth', block:'center'}),200);
+      }
+    }
 
-    menuBtn.addEventListener("click", () => {
-      menuBtn.classList.toggle("active");
-      menuPanel.classList.toggle("active");
-    });
-
-    const universitiesData = {
-      "Colombia": [
-        {
-          name: "Universidad de los Andes",
-          image: "./Imagenes/andes.png",
-          careers: [
-            { name: "Ingeniería Industrial", price: "$71.040.000" },
-            { name: "Derecho", price: "$25.460.000" },
-            { name: "Contaduría", price: "$18.476.000" }
-          ]
-        },
-        {
-          name: "Universidad CESMAG",
-          image: "./Imagenes/cesmag.png",
-          careers: [
-            { name: "Derecho", price: "$4.000.000" },
-            { name: "Ingeniería de Sistemas", price: "$3.000.000" },
-            { name: "Educación Física", price: "$4.000.000" }
-          ]
+    // Simple filter by category
+    function filtrarCategoria(cat, btn){
+      // update active button
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      if(btn) btn.classList.add('active');
+      // show/hide cards
+      document.querySelectorAll('.grid .card').forEach(card=>{
+        if(cat==='all') card.style.display = 'flex';
+        else {
+          card.style.display = card.classList.contains(cat)? 'flex':'none';
         }
-      ],
-      "Estados Unidos": [
-        {
-          name: "Harvard University",
-          image: "./Imagenes/harvard-university-logo-1.png",
-          careers: [
-            { name: "Derecho", price: "$80,000" },
-            { name: "Medicina", price: "$71,000" },
-            { name: "Ingeniería", price: "$80,000" }
-          ]
-        },
-        {
-          name: "MIT",
-          image: "./Imagenes/mit.png",
-          careers: [
-            { name: "Ingeniería Eléctrica", price: "$62,000" },
-            { name: "Física", price: "$85,960" },
-            { name: "Arquitectura", price: "$85,960" }
-          ]
-        }
-      ]
-    };
-
-    function showUniversities(country) {
-      const list = document.getElementById("universities-list");
-      const careers = document.getElementById("careers-container");
-      list.innerHTML = "";
-      careers.style.display = "none";
-
-      universitiesData[country].forEach(u => {
-        const card = document.createElement("div");
-        card.className = "university-card";
-        card.innerHTML = `
-          <img src="${u.image}" alt="${u.name}">
-          <h3>${u.name}</h3>
-        `;
-        card.onclick = () => showCareers(u);
-        list.appendChild(card);
       });
     }
 
-    function showCareers(university) {
-      const careersContainer = document.getElementById("careers-container");
-      const careerList = document.getElementById("career-list");
-      careerList.innerHTML = "";
-      university.careers.forEach(c => {
-        const li = document.createElement("li");
-        li.textContent = `${c.name}: ${c.price}`;
-        careerList.appendChild(li);
+    // Search across all text in the card
+    function filtrar(){
+      const q = document.getElementById('q').value.trim().toLowerCase();
+      document.querySelectorAll('.grid .card').forEach(card=>{
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? 'flex' : 'none';
       });
-      careersContainer.style.display = "block";
+    }
+
+    // Placeholder for "Más información"
+    function masInfo(title){
+      alert(title + "\\n\\nPróximamente: página completa del programa con plan de estudios, requisitos y rutas de formación.");
     }
   </script>
 </body>
