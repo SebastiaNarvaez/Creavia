@@ -43,8 +43,13 @@
     .brand{display:flex;align-items:center;gap:12px}
     .brand img{width:44px;height:44px;border-radius:8px;object-fit:cover}
     .brand .title{font-weight:800;color:#1f2937;font-size:1.2rem}
-    nav a{margin-left:18px;color:var(--muted);text-decoration:none;font-weight:600}
+    nav a{margin-left:18px;color:var(--muted);text-decoration:none;font-weight:700}
     nav a:hover{color:var(--primary)}
+    nav a.active {
+  color: var(--primary);
+  padding-bottom: 4px;
+}
+
 
     /* Main container */
     main{
@@ -168,6 +173,7 @@
       main{margin-top:100px;width:95%}
       .controls{flex-direction:column;align-items:stretch}
     }
+    
   </style>
 </head>
 <body>
@@ -185,7 +191,8 @@
     <nav>
       <a href="../index.html">Inicio</a>
       <a href="habilidades.html">Habilidades</a>
-      <a href="cursos.html">Cursos</a>
+      <a href="cursos.html" class="active">Cursos</a>
+      <a href="sesion.html">Cerrar sesion</a>
     </nav>
   </header>
 

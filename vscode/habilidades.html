@@ -4,121 +4,298 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Creavia — Test Vocacional</title>
-
 <style>
 :root{
-  --bg:#f5f7fa;
-  --white:#ffffff;
-  --muted:#6b6b6b;
-  --light:#dfe6ef;
-  --primary:#2563eb;
-  --accent:#059669;
-  --radius:12px;
-  --card-shadow: 0 6px 18px rgba(20,30,60,0.06);
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --text: #0f172a;
+  --light: #e6eef9;
+  --primary: #2563eb;
+  --accent: #059669;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(16,24,40,0.06);
+  --soft-shadow: 0 6px 18px rgba(16,24,40,0.04);
 }
 
+/* Reset & base */
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background:var(--bg);
   color:var(--muted);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
-/* Header */
+/* Topbar */
 header{
   position:fixed;
   top:0; left:0;
   width:100%;
-  background:var(--white);
-  padding:12px 28px;
-  box-shadow:0 2px 10px rgba(20,30,60,0.04);
+  height:76px;
+  background:var(--card);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  z-index:100;
+  padding:12px 28px;
+  box-shadow: 0 1px 6px rgba(16,24,40,0.04);
+  z-index:1000;
+}
+.brand { display:flex; gap:12px; align-items:center; }
+.brand img{ width:46px; height:46px; border-radius:10px; object-fit:cover; box-shadow:var(--soft-shadow)}
+.brand .title{ font-weight:800; color:var(--text); font-size:1.15rem; }
+.nav-menu{ display:flex; gap:18px; align-items:center; }
+.nav-menu a{ color:var(--muted); text-decoration:none; font-weight:700; padding:6px 8px; border-radius:8px; transition:color .12s, transform .12s; }
+.nav-menu a:hover{ color:var(--primary); transform:translateY(-2px) }
+.nav-menu a.active{ color:var(--primary); background: rgba(37,99,235,0.06) }
+
+/* Main layout */
+main{
+  max-width:1100px;
+  margin:110px auto 80px;
+  padding: 0 20px;
 }
 
-.brand{ display:flex; align-items:center; gap:12px; }
-.brand img{ width:44px; height:44px; border-radius:8px; object-fit:cover; }
-.brand .title{ font-weight:800; color:#1f2937; font-size:1.2rem; }
+/* Page header */
+.page-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:18px; }
+.page-head .left{ max-width:760px; }
+h1{ margin:0; font-size:1.9rem; color:var(--text); font-weight:800; }
+p.lead{ margin:8px 0 0; color:#475569; font-size:0.98rem; }
 
-.nav-menu{ display:flex; gap:18px; align-items:center; }
-.nav-menu a{ color:var(--muted); text-decoration:none; font-weight:700; }
+/* Tools */
+.tools{ display:flex; gap:12px; align-items:center; margin-top:18px; flex-wrap:wrap; }
+.search{ flex:1 1 420px; display:flex; gap:8px; }
+.search input{
+  flex:1; padding:10px 14px; border-radius:10px; border:1px solid #eaf2ff; background:var(--card);
+  outline:none; font-size:0.98rem; box-shadow:var(--soft-shadow);
+}
+.search input:focus{ border-color:var(--primary); box-shadow:0 8px 20px rgba(37,99,235,0.06); }
+.chips{ display:flex; gap:8px; flex-wrap:wrap; }
+.chip{
+  padding:8px 12px; border-radius:999px; background:var(--card); border:1px solid #eef4ff; font-weight:700; color:#334155; cursor:pointer;
+}
+.chip.active{ color:var(--primary); border-color:rgba(37,99,235,0.12); box-shadow:0 8px 20px rgba(37,99,235,0.06); transform:translateY(-2px) }
 
-/* Main */
-main{ margin:120px auto 60px; width:92%; max-width:900px; }
-h1{ font-size:2rem; color:#0f172a; font-weight:800; }
-p.lead{ margin-top:6px; color:#475569; }
+/* Cards grid */
+.cards-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:18px; margin-top:20px; }
 
-/* Category buttons */
-.cat-buttons{ display:flex; gap:10px; flex-wrap:wrap; margin:12px 0 20px; }
-.filter-btn{ padding:10px 14px; background:var(--white); border:1px solid var(--light); border-radius:999px; font-weight:700; cursor:pointer; }
-.filter-btn:hover{ border-color:var(--primary); color:var(--primary); }
-.filter-btn.active{ border-color:var(--primary); color:var(--primary); box-shadow:0 6px 18px rgba(37,99,235,0.10); }
-
-/* Classification lists */
-.clasificacion-box{ display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
-.clasificacion-box p{ background:#fff; padding:12px; border-radius:10px; border:1px solid var(--light); cursor:pointer; font-weight:700; }
-.clasificacion-box p:hover{ border-color:var(--primary); color:var(--primary); }
-
-/* Questions */
-.pregunta{ background:#fff; border:1px solid var(--light); border-radius:10px; padding:12px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
-.pregunta div.text{ flex:1; padding-right:12px; }
-.scale{ display:flex; gap:8px; align-items:center; }
+/* Card */
+.card{
+  background:var(--card); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
+  display:flex; flex-direction:column; gap:12px; transition: box-shadow .18s, transform .18s;
+}
+.card .meta{ display:flex; gap:12px; align-items:center; }
+.card .icon{ width:56px; height:56px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--primary);
+  background: linear-gradient(180deg, rgba(37,99,235,0.08), rgba(37,99,235,0.03)); box-shadow:0 6px 14px rgba(16,24,40,0.03); }
+.card h3{ margin:0; font-size:1.05rem; color:var(--text); font-weight:800; }
+.card p{ margin:8px 0 0; color:#475569; font-size:0.95rem; }
 
 /* Buttons */
-.btn-primary{ background:var(--accent); color:#fff; border:none; padding:9px 14px; border-radius:10px; cursor:pointer; font-weight:800; margin-right:8px; }
-.btn-ghost{ background:transparent; border:1px solid var(--light); padding:9px 14px; border-radius:10px; cursor:pointer; font-weight:700; }
+.btn-group{ display:flex; gap:8px; margin-top:10px; }
+.btn{ padding:10px 12px; border-radius:10px; font-weight:800; cursor:pointer; border:none; }
+.btn-outline{ background:transparent; color:var(--primary); border:1px solid rgba(37,99,235,0.12); }
+.btn-outline:hover{ background:var(--primary); color:#fff; transform:translateY(-2px) }
+.btn-solid{ background:var(--accent); color:#fff; box-shadow:0 8px 20px rgba(5,150,105,0.08); }
+.btn-solid:hover{ transform:translateY(-2px) }
+
+/* Card hover subtle */
+.card:hover{ box-shadow: 0 18px 40px rgba(16,24,40,0.08); transform: translateY(-4px); }
+
+/* Section panel (lists, questions) */
+.section-panel{ margin-top:26px; background:var(--card); border-radius:var(--radius); padding:18px; box-shadow:var(--soft-shadow); }
+.two-col{ display:flex; gap:18px; align-items:flex-start; }
+.left-col{ flex:1 1 520px; }
+.right-col{ width:300px; min-width:220px; }
+
+/* Clasificacion list */
+.clasificacion-box{ display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
+.clasificacion-box p{
+  background:transparent; margin:0; padding:12px; border-radius:10px; cursor:pointer; font-weight:800;
+  color:var(--text); border:1px solid transparent; transition: background .12s, border-color .12s, transform .12s;
+}
+.clasificacion-box p:hover{ background:#f1f8ff; border-color: rgba(37,99,235,0.08); transform:translateY(-2px); }
+
+/* Preguntas */
+.form-card{ margin-top:12px; background:linear-gradient(180deg,#fff,#fbfdff); padding:14px; border-radius:10px; border:1px solid #eef4ff; }
+.pregunta{ display:flex; justify-content:space-between; gap:12px; align-items:center; padding:12px; border-radius:10px; border:1px solid #eef4ff; background:var(--card); margin-bottom:10px; }
+.pregunta .text{ color:var(--text); font-weight:700; max-width:70%; font-size:0.96rem; }
+.pregunta .scale{ display:flex; gap:8px; align-items:center; }
 
 /* Result */
-.result-box{ background:#fff; border:1px solid var(--light); border-radius:12px; padding:20px; margin-top:20px; box-shadow:var(--card-shadow); display:none; }
-.result-box h3{ margin-top:0; }
+.result-box{ margin-top:18px; padding:16px; border-radius:12px; background:linear-gradient(180deg, rgba(160,248,248,0.03), rgba(108,223,141,0.02)); border:1px solid rgba(37,99,235,0.03); color:var(--text); }
 
-/* Small helpers */
-.controls { display:flex; gap:10px; margin-top:12px; }
-.footer-actions{ margin-top:12px; display:flex; gap:10px; align-items:center; justify-content:space-between; }
+/* Progress */
+.progress-wrap{ margin-top:12px; }
+.progress{ height:10px; background:#eef4ff; border-radius:999px; overflow:hidden; }
+.progress-fill{ width:0%; height:100%; background:linear-gradient(90deg,var(--primary),#7ab8ff); transition:width .4s ease; }
+
+/* Footer actions */
+.footer-actions{ display:flex; justify-content:space-between; gap:12px; margin-top:14px; align-items:center; }
 .center{ display:flex; gap:10px; align-items:center; }
+
+/* Small screen adjustment */
+@media (max-width:900px){
+  .nav-menu{ display:none; }
+  .two-col{ flex-direction:column; }
+  .right-col{ width:100%; min-width:auto; }
+  .card:hover{ transform:none; }
+}
+/* Etiqueta de completado en tarjetas */
+.card-completed {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #059669;
+  color: white;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+.subcategory-card {
+  position: relative;
+}
+
 </style>
 </head>
-
 <body>
 
 <header>
   <div class="brand">
-    <img src="../Imagenes/LOG2.jpg" alt="Logo Creavia">
+    <img src="../Imagenes/LOG2.jpg" alt="Creavia">
     <div class="title">Creavia</div>
   </div>
 
-  <nav class="nav-menu">
+  <nav class="nav-menu" aria-label="principal">
     <a href="../index.html">Inicio</a>
+    <a href="test.html">Test</a>
     <a href="habilidades.html">Habilidades</a>
     <a href="cursos.html">Cursos</a>
+    <a href="sesion.html">Iniciar sesión</a>
   </nav>
 </header>
 
 <main>
-  <h1>Test Vocacional</h1>
-  <p class="lead">Selecciona una categoría y responde cada grupo de preguntas.</p>
+  <div class="page-head">
+    <div class="left">
+      <h1>Test Vocacional</h1>
+      <p class="lead">Selecciona una de las dos categorías principales para comenzar: <strong>Habilidades Blandas</strong> o <strong>Habilidades Duras</strong>. Luego responde las subcategorías correspondientes.</p>
+      <div style="margin-top:12px;font-size:0.9rem;color:#556074">
+        <a href="/mnt/data/contenido de los cursos.docx" style="color:var(--primary);text-decoration:underline">Descargar contenido de los cursos</a>
+      </div>
+    </div>
 
-  <div class="cat-buttons">
-    <button class="filter-btn" onclick="toggleClasificacionBlandas()">Habilidades blandas</button>
-    <button class="filter-btn" onclick="toggleClasificacionDuras()">Habilidades duras</button>
-    <button class="filter-btn" id="btn-final" style="display:none" onclick="mostrarResultadoFinal()">Resultado final</button>
+    <div style="min-width:220px; max-width:320px;">
+      <div style="background:var(--card); border-radius:12px; padding:14px; box-shadow:var(--soft-shadow);">
+        <strong style="display:block;color:var(--text);font-weight:800">Progreso</strong>
+        <small style="color:#6b7280">Completa todas las subcategorías para ver tu resultado final.</small>
+        <div class="progress-wrap">
+          <div class="progress">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button class="btn btn-outline" onclick="reiniciarTest()" title="Reiniciar">Reiniciar</button>
+          <button class="btn btn-outline" onclick="descargarResultados()" title="Exportar">Exportar</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="clasificacion-blandas" class="clasificacion-box" style="display:none"></div>
-  <div id="preguntas-blandas"></div>
+  <!-- Search & chips -->
+  <div class="tools">
+    <div class="search">
+      <input id="siteSearch" placeholder="Buscar subcategoría o palabra clave..." />
+      <div style="min-width:110px;">
+        <button class="btn btn-outline" onclick="toggleShowAll()">Mostrar todo</button>
+      </div>
+    </div>
 
-  <div id="clasificacion-duras" class="clasificacion-box" style="display:none"></div>
-  <div id="preguntas-duras"></div>
+    <div class="chips" role="tablist" aria-label="Filtros">
+      <div class="chip active" data-filter="all" onclick="applyChip(this)">Todos</div>
+      <div class="chip" data-filter="blandas" onclick="applyChip(this)">Blandas</div>
+      <div class="chip" data-filter="duras" onclick="applyChip(this)">Duras</div>
+    </div>
+  </div>
 
-  <div id="resultado-final" class="result-box"></div>
+  <!-- TWO BIG CARDS: main categories -->
+  <section class="cards-grid" id="main-categories" style="margin-top:18px;">
+    <article class="card" data-type="blandas">
+      <div class="meta">
+        <div class="icon">🤝</div>
+        <div>
+          <h3>Habilidades Blandas</h3>
+          <p>Comunicación, trabajo en equipo, manejo emocional y pensamiento crítico.</p>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-outline" onclick="openSubcategories('blandas')">Ver subcategorías</button>
+        <button class="btn btn-solid" onclick="mostrarInfo('blandas')">Más info</button>
+      </div>
+    </article>
 
+    <article class="card" data-type="duras">
+      <div class="meta">
+        <div class="icon">⚙️</div>
+        <div>
+          <h3>Habilidades Duras</h3>
+          <p>Conocimientos técnicos, herramientas digitales, procesos y gestión.</p>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-outline" onclick="openSubcategories('duras')">Ver subcategorías</button>
+        <button class="btn btn-solid" onclick="mostrarInfo('duras')">Más info</button>
+      </div>
+    </article>
+  </section>
+
+  <!-- Section panel: subcategories, questions, results -->
+  <section class="section-panel" id="panel-area" style="display:block;">
+    <div class="two-col">
+      <div class="left-col">
+        <!-- Subcategories lists will be injected here -->
+        <div id="subcategories-area" class="clasificacion-box" style="margin-bottom:8px;"></div>
+
+        <!-- Questions area -->
+        <div id="questions-area"></div>
+      </div>
+
+      <aside class="right-col">
+        <!-- Quick summary and progress -->
+        <div style="background:var(--card); padding:12px; border-radius:10px; box-shadow:var(--soft-shadow);">
+          <strong style="display:block;color:var(--text);font-weight:800">Resumen</strong>
+          <p style="color:#6b7280;margin:6px 0 10px;font-size:0.95rem">
+            Respuestas guardadas: <span id="savedCount">0</span> / <span id="totalSub">6</span>
+          </p>
+          <div style="font-size:0.95rem;color:#475569">
+            <p id="lastSaved" style="margin:6px 0;opacity:0.9">Última acción: —</p>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div style="background:var(--card); padding:12px; border-radius:10px; box-shadow:var(--soft-shadow);">
+          <strong style="display:block;color:var(--text);font-weight:800">Acciones</strong>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-direction:column">
+            <button class="btn btn-outline" onclick="toggleClasificacionBlandas()">Mostrar Blandas</button>
+            <button class="btn btn-outline" onclick="toggleClasificacionDuras()">Mostrar Duras</button>
+            <button id="btn-final" class="btn btn-solid" style="display:none" onclick="mostrarResultadoFinal()">Ver Resultado Final</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Final result panel -->
+    <div id="resultado-final" class="result-box" style="display:none"></div>
+  </section>
 </main>
 
 <script>
-/* ---------------------- PREGUNTAS ---------------------- */
+/* ================= DATA ================= */
 const preguntasBlandas = {
   interpersonales:[
     "¿Cómo manejas los desacuerdos con otras personas?",
@@ -197,7 +374,6 @@ const preguntasDuras = {
   ]
 };
 
-/* ---------------------- CONTRIBUCIONES ---------------------- */
 const contribuciones = {
   interpersonales:{social:1},
   intrapersonales:{administrativo:0.5,salud:0.5},
@@ -207,312 +383,315 @@ const contribuciones = {
   administrativas:{administrativo:1}
 };
 
-/* ---------------------- ESTADO Y ORDEN ---------------------- */
 const ordenBlandas = ["interpersonales","intrapersonales","cognitivas"];
 const ordenDuras = ["tecnologicas","creativas","administrativas"];
 const todasSubcategorias = [...ordenBlandas,...ordenDuras];
 
+/* ================= STATE ================= */
 let storedCategoryScores = {};
 let profileTotals = {tecnologico:0,creativo:0,social:0,salud:0,administrativo:0};
 let storedAnswers = {};
-let ultimaCategoria = null; // para saber dónde volver
+let ultimaCategoria = null;
 
-/* ---------------------- HELPERS ---------------------- */
+/* ================= STORAGE HELPERS ================= */
 function saveAllToStorage(){
   localStorage.setItem('storedCategoryScores', JSON.stringify(storedCategoryScores));
   localStorage.setItem('profileTotals', JSON.stringify(profileTotals));
   localStorage.setItem('storedAnswers', JSON.stringify(storedAnswers));
+  updateUIAfterSave();
 }
-
 function loadAllFromStorage(){
   storedCategoryScores = JSON.parse(localStorage.getItem('storedCategoryScores')) || {};
   profileTotals = JSON.parse(localStorage.getItem('profileTotals')) || {tecnologico:0,creativo:0,social:0,salud:0,administrativo:0};
   storedAnswers = JSON.parse(localStorage.getItem('storedAnswers')) || {};
+  updateUIAfterSave();
 }
 
-/* ---------------------- UI LOGIC ---------------------- */
+/* ================= UI: initial render & helpers ================= */
+document.getElementById('totalSub').textContent = todasSubcategorias.length;
 
-function toggleClasificacionBlandas(){
-  ultimaCategoria = 'blandas';
-  document.getElementById('clasificacion-blandas').style.display="block";
-  document.getElementById('clasificacion-duras').style.display="none";
-  renderClasificaciones('blandas');
+function updateUIAfterSave(){
+  const saved = Object.keys(storedCategoryScores).length;
+  document.getElementById('savedCount').textContent = saved;
+  document.getElementById('lastSaved').textContent = `Subcategorías completadas: ${saved}/${todasSubcategorias.length}`;
+  updateProgress();
+  document.getElementById('btn-final').style.display = (saved === todasSubcategorias.length) ? '' : 'none';
+  // If all completed show result
+  if(saved === todasSubcategorias.length) mostrarResultadoFinal();
 }
 
-function toggleClasificacionDuras(){
-  ultimaCategoria = 'duras';
-  document.getElementById('clasificacion-blandas').style.display="none";
-  document.getElementById('clasificacion-duras').style.display="block";
-  renderClasificaciones('duras');
+function updateProgress(){
+  const total = todasSubcategorias.length;
+  const done = Object.keys(storedCategoryScores).length;
+  const pct = Math.round((done/total)*100);
+  document.getElementById('progressFill').style.width = pct + '%';
 }
 
-function renderClasificaciones(tipo){
-  const cont = tipo==='blandas' ? document.getElementById('clasificacion-blandas') : document.getElementById('clasificacion-duras');
-  cont.innerHTML = "";
-  const grupo = tipo==='blandas' ? preguntasBlandas : preguntasDuras;
+/* ================= NAV / FILTERS ================= */
+function applyChip(el){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const key = el.dataset.filter;
+  if(key === 'all'){ document.getElementById('main-categories').style.display = ''; return; }
+  // show only appropriate main card
+  if(key === 'blandas'){ document.querySelectorAll('.card[data-type="duras"]').forEach(c=>c.style.display='none'); document.querySelectorAll('.card[data-type="blandas"]').forEach(c=>c.style.display=''); }
+  if(key === 'duras'){ document.querySelectorAll('.card[data-type="blandas"]').forEach(c=>c.style.display='none'); document.querySelectorAll('.card[data-type="duras"]').forEach(c=>c.style.display=''); }
+}
+function toggleShowAll(){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  document.querySelector('.chip[data-filter="all"]').classList.add('active');
+  document.querySelectorAll('.card').forEach(c=>c.style.display='');
+}
 
-  Object.keys(grupo).forEach(sub=>{
-    const p = document.createElement("p");
-    p.textContent = sub.toUpperCase();
-    if(storedCategoryScores[sub] !== undefined){
-      p.textContent += ` — completada (${Number(storedCategoryScores[sub]).toFixed(2)})`;
-      p.style.opacity = "0.8";
-    }
-    p.onclick = ()=> mostrarPreguntas(tipo, sub);
-    cont.appendChild(p);
+/* search */
+document.getElementById('siteSearch').addEventListener('input', function(e){
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('.cards-grid .card').forEach(card=>{
+    const text = (card.innerText||'').toLowerCase();
+    card.style.display = text.includes(q) ? '' : 'none';
   });
+});
+
+/* info (simple) */
+function mostrarInfo(key){
+  const info = {
+    blandas: "Las habilidades blandas son las competencias interpersonales y emocionales que facilitan la interacción y el trabajo en equipo.",
+    duras: "Las habilidades duras son conocimientos técnicos y competencias específicas adquiridas mediante formación o práctica."
+  };
+  alert(info[key] || "Información no disponible");
 }
 
+/* ================= FLOW: main categories -> subcategories -> questions ================= */
+function openSubcategories(main){
+  // main: 'blandas' or 'duras'
+  ultimaCategoria = main;
+  const area = document.getElementById('subcategories-area');
+  area.innerHTML = ''; // clear
+  const group = main === 'blandas' ? ordenBlandas : ordenDuras;
+  group.forEach(key=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.marginBottom = '12px';
+    // pick icon and description
+    const meta = document.createElement('div'); meta.className = 'meta';
+    const icon = document.createElement('div'); icon.className = 'icon';
+    icon.textContent = key === 'interpersonales' ? '🫂' : key === 'intrapersonales' ? '🧭' : key === 'cognitivas' ? '🧠' : key === 'tecnologicas' ? '💻' : key === 'creativas' ? '🎨' : '📊';
+    const txtWrap = document.createElement('div');
+    const title = document.createElement('h3'); title.textContent = formatTitle(key);
+    const desc = document.createElement('p'); desc.style.marginTop = '6px';
+    desc.textContent = getSubDescription(key);
+    txtWrap.appendChild(title); txtWrap.appendChild(desc);
+    meta.appendChild(icon); meta.appendChild(txtWrap);
+    const groupBtns = document.createElement('div'); groupBtns.className = 'btn-group';
+    const btnView = document.createElement('button'); btnView.className='btn btn-outline'; btnView.textContent='Comenzar preguntas';
+    btnView.onclick = ()=> mostrarPreguntas(main, key);
+    const btnInfo = document.createElement('button'); btnInfo.className='btn btn-solid'; btnInfo.textContent='Más info';
+    btnInfo.onclick = ()=> mostrarInfo(key);
+    groupBtns.appendChild(btnView); groupBtns.appendChild(btnInfo);
+    card.appendChild(meta); card.appendChild(groupBtns);
+    area.appendChild(card);
+  });
+  // clear questions area
+  document.getElementById('questions-area').innerHTML = '';
+  // scroll to panel
+  window.scrollTo({top: document.getElementById('panel-area').offsetTop - 30, behavior: 'smooth'});
+}
+
+function formatTitle(key){
+  return key.charAt(0).toUpperCase() + key.slice(1);
+}
+function getSubDescription(key){
+  const map = {
+    interpersonales: "Preguntas sobre interacción, comunicación y colaboración.",
+    intrapersonales: "Preguntas sobre manejo emocional, organización y disciplina.",
+    cognitivas: "Preguntas sobre resolución de problemas y pensamiento crítico.",
+    tecnologicas: "Preguntas sobre habilidades técnicas y herramientas digitales.",
+    creativas: "Preguntas sobre creatividad, diseño y producción de contenidos.",
+    administrativas: "Preguntas sobre gestión, procesos y números."
+  };
+  return map[key] || '';
+}
+
+/* ================= Questions rendering, saving ================= */
 function mostrarPreguntas(tipo, sub){
   ultimaCategoria = tipo;
-  const cont = tipo==='blandas' ? document.getElementById('preguntas-blandas') : document.getElementById('preguntas-duras');
-  const grupo = tipo==='blandas' ? preguntasBlandas[sub] : preguntasDuras[sub];
+  const area = document.getElementById('questions-area');
+  area.innerHTML = ''; // clear
+  const preguntas = tipo === 'blandas' ? preguntasBlandas[sub] : preguntasDuras[sub];
+  if(!preguntas) return;
+  // Build form
+  const formWrap = document.createElement('div'); formWrap.className = 'form-card';
+  const title = document.createElement('h3'); title.textContent = sub.toUpperCase();
+  formWrap.appendChild(title);
+  const form = document.createElement('form'); form.id = `form-${sub}`;
+  preguntas.forEach((q,i)=>{
+    const qEl = document.createElement('div'); qEl.className='pregunta';
+    const qText = document.createElement('div'); qText.className='text'; qText.textContent = `${i+1}. ${q}`;
+    const scale = document.createElement('div'); scale.className='scale';
+    for(let v=1; v<=5; v++){
+      const label = document.createElement('label'); label.style.fontWeight='700'; label.style.display='flex'; label.style.alignItems='center'; label.style.gap='6px';
+      const input = document.createElement('input'); input.type='radio'; input.name = `${sub}_q${i}`; input.value = v;
+      label.appendChild(input); label.appendChild(document.createTextNode(String(v)));
+      scale.appendChild(label);
+    }
+    qEl.appendChild(qText); qEl.appendChild(scale);
+    form.appendChild(qEl);
+  });
+  const actions = document.createElement('div'); actions.style.display='flex'; actions.style.gap='10px'; actions.style.marginTop='10px';
+  const btnSave = document.createElement('button'); btnSave.className='btn btn-solid'; btnSave.type='submit'; btnSave.textContent='Guardar resultado';
+  const btnBack = document.createElement('button'); btnBack.className='btn btn-outline'; btnBack.type='button'; btnBack.textContent='Volver';
+  btnBack.onclick = ()=> volverToList();
+  actions.appendChild(btnSave); actions.appendChild(btnBack);
+  form.appendChild(actions);
+  formWrap.appendChild(form);
+  area.appendChild(formWrap);
 
-  // esconder listados
-  document.getElementById('clasificacion-blandas').style.display="none";
-  document.getElementById('clasificacion-duras').style.display="none";
-
-  // build form
-  cont.innerHTML = `
-    <h3>${sub.toUpperCase()}</h3>
-    <form id="form-${sub}">
-      ${grupo.map((q,i)=>`
-        <div class="pregunta" data-index="${i}">
-          <div class="text">${(i+1)}. ${q}</div>
-          <div class="scale" aria-hidden="true">
-            ${[1,2,3,4,5].map(v=>`
-              <label style="font-weight:600; display:flex; align-items:center; gap:6px;">
-                <input style="margin-right:6px" type="radio" name="${sub}_q${i}" value="${v}">
-                ${v}
-              </label>
-            `).join("")}
-          </div>
-        </div>
-      `).join("")}
-
-      <div class="controls">
-        <button class="btn-primary" type="submit">Guardar resultado</button>
-        <button type="button" class="btn-ghost" onclick="volver()">Volver</button>
-      </div>
-    </form>
-  `;
-
-  // precargar respuestas si hay
+  // Preload saved answers
   if(storedAnswers[sub]){
     Object.keys(storedAnswers[sub]).forEach(name=>{
       const val = storedAnswers[sub][name];
-      const input = document.querySelector(`input[name="${name}"][value="${val}"]`);
+      const input = form.querySelector(`input[name="${name}"][value="${val}"]`);
       if(input) input.checked = true;
     });
   }
 
-  // attach submit
-  document.getElementById(`form-${sub}`).onsubmit = (e)=>{
+  // Submit handler
+  form.onsubmit = (e)=>{
     e.preventDefault();
     guardarCategoria(sub, tipo);
   };
+
+  // scroll to questions
+  window.scrollTo({top: formWrap.offsetTop - 20, behavior:'smooth'});
 }
 
 function guardarCategoria(sub, tipo){
-  const totalPreguntas = (preguntasBlandas[sub] || preguntasDuras[sub]).length;
-  const respuestasSeleccionadas = [];
-
-  for(let i=0;i<totalPreguntas;i++){
+  const preguntas = tipo === 'blandas' ? preguntasBlandas[sub] : preguntasDuras[sub];
+  const total = preguntas.length;
+  const respuestas = [];
+  for(let i=0;i<total;i++){
     const sel = document.querySelector(`input[name="${sub}_q${i}"]:checked`);
-    respuestasSeleccionadas.push(sel ? sel.value : null);
+    respuestas.push(sel ? Number(sel.value) : null);
   }
-
-  if(respuestasSeleccionadas.includes(null)){
-    alert("Por favor responde todas las preguntas antes de guardar.");
+  if(respuestas.includes(null)){
+    alert('Por favor responde todas las preguntas antes de guardar.');
     return;
   }
-
-  // guardar respuestas individuales
+  // store answers
   storedAnswers[sub] = {};
-  respuestasSeleccionadas.forEach((val,i)=>{
-    const name = `${sub}_q${i}`;
-    storedAnswers[sub][name] = val;
-  });
+  respuestas.forEach((v,i)=> storedAnswers[sub][`${sub}_q${i}`] = v);
 
-  // calcular promedio
-  const promedio = respuestasSeleccionadas.reduce((t,v)=>t+Number(v),0) / respuestasSeleccionadas.length;
+  // compute average
+  const promedio = respuestas.reduce((s,v)=>s+v,0) / respuestas.length;
 
-  // manejar prev (para evitar sumar repetido)
+  // Avoid double-sum: subtract previous contribution (if any) then add
   const prevAll = JSON.parse(localStorage.getItem('storedCategoryScores')) || {};
-  const prevValue = prevAll[sub] !== undefined ? Number(prevAll[sub]) : 0;
-
-  // restar la contribución previa si existía
-  if(prevValue && contribuciones[sub]){
+  const prevVal = prevAll[sub] !== undefined ? Number(prevAll[sub]) : 0;
+  if(prevVal && contribuciones[sub]){
     Object.keys(contribuciones[sub]).forEach(area=>{
-      profileTotals[area] = (profileTotals[area] || 0) - prevValue * contribuciones[sub][area];
+      profileTotals[area] = (profileTotals[area] || 0) - prevVal * contribuciones[sub][area];
     });
   }
-
-  // guardar nuevo promedio y sumar contribuciones
+  // set new
   storedCategoryScores[sub] = promedio;
+  localStorage.setItem(`completado_${sub}`, "true");
   if(contribuciones[sub]){
     Object.keys(contribuciones[sub]).forEach(area=>{
       profileTotals[area] = (profileTotals[area] || 0) + promedio * contribuciones[sub][area];
     });
   }
 
-  // persistir todo
   saveAllToStorage();
-
-  // comprobar completadas
-  const completadas = Object.keys(storedCategoryScores).length;
-  if(completadas === todasSubcategorias.length){
-    document.getElementById("btn-final").style.display="inline-block";
-    mostrarResultadoFinal();
-    return;
-  }
-
-  // abrir siguiente
+  document.getElementById('lastSaved').textContent = `Guardado: ${sub} (${promedio.toFixed(2)})`;
+  // auto open next subcategory if exists
   abrirSiguienteCategoria();
 }
 
 function abrirSiguienteCategoria(){
-  // limpiar contenedores para evitar duplicados
-  document.getElementById('preguntas-blandas').innerHTML = "";
-  document.getElementById('preguntas-duras').innerHTML = "";
-
+  // clear question area
+  document.getElementById('questions-area').innerHTML = '';
   const siguiente = todasSubcategorias.find(c => storedCategoryScores[c] === undefined);
   if(!siguiente){
-    volver();
-    return;
+    // done
+    updateUIAfterSave();
+    return volverToList();
   }
-
-  if(preguntasBlandas[siguiente]){
-    mostrarPreguntas("blandas", siguiente);
-  } else {
-    mostrarPreguntas("duras", siguiente);
-  }
+  // determine if siguiente is blandas or duras
+  if(preguntasBlandas[siguiente]) mostrarPreguntas('blandas', siguiente);
+  else mostrarPreguntas('duras', siguiente);
 }
 
-function volver(){
-  // limpiar preguntas renderizadas
-  document.getElementById('preguntas-blandas').innerHTML = "";
-  document.getElementById('preguntas-duras').innerHTML = "";
-
-  // mostrar listas según ultimaCategoria (si no hay, mostrar blandas)
-  if(ultimaCategoria === 'duras'){
-    document.getElementById('clasificacion-blandas').style.display="none";
-    document.getElementById('clasificacion-duras').style.display="block";
-    renderClasificaciones('duras');
-  } else {
-    document.getElementById('clasificacion-blandas').style.display="block";
-    document.getElementById('clasificacion-duras').style.display="none";
-    renderClasificaciones('blandas');
-  }
+function volverToList(){
+  document.getElementById('questions-area').innerHTML = '';
+  // show subcategories of ultimaCategoria
+  if(ultimaCategoria === 'duras') openSubcategories('duras');
+  else openSubcategories('blandas');
+  updateUIAfterSave();
 }
 
-/* ---------------------- MOSTRAR RESULTADO ---------------------- */
+/* ================= Results & utilities ================= */
 function mostrarResultadoFinal(){
-  // asegurar que profileTotals esté actualizado desde storage
+  // load latest counts
   loadAllFromStorage();
-
-  const totalAreas = Object.keys(profileTotals);
-  let mejor = totalAreas[0];
-  totalAreas.forEach(a=>{
-    if(profileTotals[a] > profileTotals[mejor]) mejor = a;
-  });
-
+  const areas = Object.keys(profileTotals);
+  let mejor = areas[0];
+  areas.forEach(a=> { if((profileTotals[a]||0) > (profileTotals[mejor]||0)) mejor = a; });
   const box = document.getElementById('resultado-final');
-  box.style.display = "block";
-
-  let detalles = `<h3>Resultado final</h3>`;
-  detalles += `<p>Tu perfil más fuerte es: <strong>${mejor.toUpperCase()}</strong></p>`;
-  detalles += `<p>Puntuaciones por área:</p><ul>`;
-  totalAreas.forEach(a=>{
-    detalles += `<li><strong>${a}</strong>: ${Number(profileTotals[a]||0).toFixed(2)}</li>`;
+  box.style.display = 'block';
+  let html = `<h3>Resultado final</h3>`;
+  html += `<p>Tu perfil más fuerte es: <strong>${mejor.toUpperCase()}</strong></p>`;
+  html += `<p>Puntuaciones por área:</p><ul>`;
+  areas.forEach(a=> html += `<li><strong>${a}</strong>: ${(profileTotals[a]||0).toFixed(2)}</li>`);
+  html += `</ul>`;
+  html += `<p>Subcategorías completadas (${Object.keys(storedCategoryScores).length}/${todasSubcategorias.length}):</p><ul>`;
+  todasSubcategorias.forEach(s => {
+    if(storedCategoryScores[s] !== undefined) html += `<li>${s}: ${Number(storedCategoryScores[s]).toFixed(2)}</li>`;
+    else html += `<li style="opacity:0.6">${s}: sin completar</li>`;
   });
-  detalles += `</ul>`;
-
-  detalles += `<p>Subcategorías completadas (${Object.keys(storedCategoryScores).length}/${todasSubcategorias.length}):</p><ul>`;
-  todasSubcategorias.forEach(s=>{
-    if(storedCategoryScores[s] !== undefined){
-      detalles += `<li>${s}: ${Number(storedCategoryScores[s]).toFixed(2)}</li>`;
-    } else {
-      detalles += `<li style="opacity:0.5">${s}: sin completar</li>`;
-    }
-  });
-  detalles += `</ul>`;
-
-  detalles += `<div class="footer-actions">
-                <div class="center">
-                  <button class="btn-primary" onclick="reiniciarTest()">Reiniciar Test</button>
-                  <button class="btn-ghost" onclick="descargarResultados()">Descargar resultados</button>
-                </div>
-                <div></div>
-               </div>`;
-
-  box.innerHTML = detalles;
-  window.scrollTo({top:0, behavior:'smooth'});
+  html += `</ul>`;
+  html += `<div class="footer-actions"><div class="center">
+            <button class="btn btn-solid" onclick="reiniciarTest()">Reiniciar Test</button>
+            <button class="btn btn-outline" onclick="descargarResultados()">Descargar resultados</button>
+           </div></div>`;
+  box.innerHTML = html;
+  window.scrollTo({top: box.offsetTop - 20, behavior:'smooth'});
+  updateUIAfterSave();
 }
 
-/* ---------------------- REINICIAR (robusto) ---------------------- */
 function reiniciarTest(){
   if(!confirm("¿Seguro que quieres reiniciar el test? Se borrarán los resultados guardados.")) return;
-
-  // reset variables en memoria
   storedCategoryScores = {};
   profileTotals = {tecnologico:0,creativo:0,social:0,salud:0,administrativo:0};
   storedAnswers = {};
   ultimaCategoria = null;
-
-  // borrar storage
   localStorage.removeItem('storedCategoryScores');
   localStorage.removeItem('profileTotals');
   localStorage.removeItem('storedAnswers');
-
-  // limpiar UI completamente
-  document.getElementById('preguntas-blandas').innerHTML = "";
-  document.getElementById('preguntas-duras').innerHTML = "";
-  const rf = document.getElementById('resultado-final');
-  rf.style.display = "none";
-  rf.innerHTML = "";
-  document.getElementById('btn-final').style.display = "none";
-
-  // re-render de listas
-  document.getElementById('clasificacion-blandas').style.display = "block";
-  document.getElementById('clasificacion-duras').style.display = "none";
-  renderClasificaciones('blandas');
-
-  // llevar al tope
+  document.getElementById('subcategories-area').innerHTML = '';
+  document.getElementById('questions-area').innerHTML = '';
+  document.getElementById('resultado-final').style.display = 'none';
+  document.getElementById('resultado-final').innerHTML = '';
+  document.getElementById('btn-final').style.display = 'none';
+  updateUIAfterSave();
+  toggleShowAll();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-/* ---------------------- DESCARGAR ---------------------- */
 function descargarResultados(){
-  const data = {
-    storedCategoryScores,
-    profileTotals,
-    storedAnswers,
-    fecha: new Date().toISOString()
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const data = { storedCategoryScores, profileTotals, storedAnswers, fecha: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'resultados_test_creavia.json';
-  a.click();
-  URL.revokeObjectURL(url);
+  const a = document.createElement('a'); a.href = url; a.download = 'resultados_test_creavia.json'; a.click(); URL.revokeObjectURL(url);
 }
 
-/* ---------------------- INICIALIZACIÓN ---------------------- */
+/* ================= Init ================= */
 (function init(){
-  // cargar desde storage (si hay)
   loadAllFromStorage();
-
-  // si ya completó todo antes, mostrar resultado; si no, abrir blandas
-  if(Object.keys(storedCategoryScores).length === todasSubcategorias.length){
-    document.getElementById("btn-final").style.display="inline-block";
-    mostrarResultadoFinal();
-  } else {
-    toggleClasificacionBlandas();
-  }
+  // default show nothing on subcategories until user chooses main category
+  document.getElementById('subcategories-area').innerHTML = '';
+  document.getElementById('questions-area').innerHTML = '';
+  updateUIAfterSave();
 })();
 </script>
-
 </body>
 </html>
